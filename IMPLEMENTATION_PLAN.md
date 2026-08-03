@@ -8,6 +8,12 @@
 
 **Tech Stack:** Angular 22, TypeScript 6, SCSS, Vitest, ASP.NET Core 10, C# 14, EF Core 10, SQLite, SQL Server, xUnit, Docker, Bicep, GitHub Actions, Azure Static Web Apps, Azure App Service, Azure SQL, Application Insights.
 
+## Delivery status
+
+Implemented on 2026-08-02. The repository now includes the anchored recruiter experience, lazy project-detail route, persisted/rate-limited contact flow, provider-neutral EF migration, Docker and Azure delivery definitions, independent review fixes, and complete handoff documentation. Automated builds and tests, browser accessibility checks, SQLite execution, SQL Server DDL generation, migration-bundle creation, Bicep validation, and workflow/config parsing were run locally. Docker image execution and a real Azure deployment remain environment-gated and are explicitly documented; no paid resources were created.
+
+The checklist below is retained as the original executable work breakdown and review history rather than rewritten after implementation.
+
 ## Global constraints
 
 - Keep all personal details, links, skills, experience, projects, and resume paths in central configuration files.

@@ -1,0 +1,76 @@
+name: Continuous integration
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  frontend:
+    name: Frontend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - run: npm audit --audit-level=high
+      - run: npm run lint
+      - run: npm run test -- --watch=false
+      - run: npm run build -- --configuration production
+
+  backend:
+    name: Backend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - run: dotnet restore Portfolio.slnx
+      - name: Fail on vulnerable NuGet dependencies
+        run: |
+          vulnerability_report="$(dotnet list Portfolio.slnx package --vulnerable --include-transitive)"
+          echo "$vulnerability_report"
+          if grep --quiet 'has the following vulnerable packages' <<< "$vulnerability_report"; then
+            exit 1
+          fi
+      - run: dotnet build Portfolio.slnx --configuration Release --no-restore
+      - run: dotnet test Portfolio.slnx --configuration Release --no-build --no-restore
+      - name: Verify SQL Server migration generation
+        env:
+          Database__Provider: SqlServer
+          ConnectionStrings__Portfolio: Server=localhost;Database=portfolio;Integrated Security=true;TrustServerCertificate=true
+        run: |
+          dotnet tool restore
+          dotnet ef migrations script --idempotent \
+            --project src/Portfolio.Infrastructure/Portfolio.Infrastructure.csproj \
+            --startup-project src/Portfolio.Api/Portfolio.Api.csproj \
+            --output "$RUNNER_TEMP/portfolio-sqlserver.sql"
+          grep --quiet 'uniqueidentifier' "$RUNNER_TEMP/portfolio-sqlserver.sql"
+
+  delivery-definitions:
+    name: Delivery definitions
+    runs-on: ubuntu-latest
+    env:
+      CONTACT_HASH_SALT: ci-only-contact-hash-salt-0123456789abcdef
+      PORTFOLIO_API_URL: http://localhost:5050
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate Compose interpolation and schema
+        run: docker compose config --quiet
+      - name: Validate Bicep syntax
+        run: az bicep build --file infra/main.bicep --outfile "$RUNNER_TEMP/portfolio-main.json"

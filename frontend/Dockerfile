@@ -14,7 +14,7 @@ ARG PORTFOLIO_API_URL=http://localhost:5050
 RUN PORTFOLIO_API_URL="$PORTFOLIO_API_URL" node -e "const fs = require('node:fs'); const value = process.env.PORTFOLIO_API_URL; fs.writeFileSync('public/assets/config.js', 'globalThis.__PORTFOLIO_CONFIG__ = Object.freeze({ apiUrl: ' + JSON.stringify(value) + ' });\\n');"
 RUN npm run build -- --configuration production
 
-FROM nginx:1.27-alpine AS runtime
+FROM nginx:1.30.4-alpine3.24 AS runtime
 
 COPY frontend/nginx.conf /etc/nginx/conf.d/default.conf
 # Angular 22's application builder emits browser assets under this directory.

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": { "value": "westeurope" },
+    "staticWebAppName": { "value": "replace-with-globally-unique-portfolio-web" },
+    "apiAppName": { "value": "replace-with-globally-unique-portfolio-api" },
+    "sqlServerName": { "value": "replace-with-globally-unique-portfolio-sql" },
+    "appServicePlanSku": { "value": "B1" },
+    "staticWebAppSku": { "value": "Free" },
+    "deploySql": { "value": true },
+    "deployKeyVault": { "value": false },
+    "allowAzureServicesToSql": { "value": false },
+    "sqlAdministratorLogin": { "value": "portfolioadmin" },
+    "sqlMaxVcores": { "value": 1 },
+    "sqlAutoPauseDelay": { "value": 60 },
+    "logAnalyticsRetentionInDays": { "value": 30 },
+    "tags": {
+      "value": {
+        "application": "portfolio",
+        "environment": "production",
+        "managedBy": "bicep"
+      }
+    }
+  }
+}

@@ -1,0 +1,45 @@
+# Angular
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+frontend/coverage/
+
+# .NET
+.dotnet/
+.tools/
+**/bin/
+**/bin?Debug/
+**/obj/
+*.user
+*.suo
+
+# Local data and secrets
+.env
+.env.*
+!.env.example
+*.db
+*.db-shm
+*.db-wal
+data/
+
+# Editors and OS
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# Local skill observation state
+skill-observations/
+cross-cutting-principles.md
+
+# Test and tool output
+TestResults/
+playwright-report/
+test-results/
+screenshots/
+*.log
+tmp/
+output/
+dogfood-output/
