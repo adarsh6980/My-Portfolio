@@ -1,0 +1,44 @@
+@use '@fontsource-variable/space-grotesk';
+@use '@fontsource-variable/manrope';
+@use '@fontsource-variable/jetbrains-mono';
+
+:root {
+  --ink: #070b14;
+  --workspace: #0d1424;
+  --panel: #121c30;
+  --azure: #5b8cff;
+  --azure-action: #315fc8;
+  --signal: #55d6be;
+  --violet: #9b8afb;
+  --paper: #f4f7ff;
+  --slate: #9caac2;
+  --line: #202c43;
+  --line-strong: #33425e;
+  --display: 'Space Grotesk Variable', sans-serif;
+  --body: 'Manrope Variable', sans-serif;
+  --mono: 'JetBrains Mono Variable', monospace;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.8rem;
+  --shadow-sm: 0 12px 32px rgba(0, 0, 0, .18);
+  --shadow-lg: 0 24px 70px rgba(0, 0, 0, .35);
+  --shadow-xl: 0 45px 100px rgba(0, 0, 0, .5), 0 0 70px rgba(65, 112, 255, .09);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 5.5rem; }
+body { margin: 0; color: var(--paper); background: var(--ink); font-family: var(--body); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+body::before { content: ''; position: fixed; inset: 0; z-index: -2; background: radial-gradient(circle at 82% 3%, rgba(72, 116, 255, .22), transparent 34%), radial-gradient(circle at 8% 40%, rgba(72, 116, 255, .09), transparent 30%), var(--ink); }
+body::after { content: ''; position: fixed; inset: 0; z-index: -1; opacity: .18; background-image: linear-gradient(rgba(91,140,255,.12) 1px, transparent 1px), linear-gradient(90deg, rgba(91,140,255,.12) 1px, transparent 1px); background-size: 64px 64px; mask-image: linear-gradient(to bottom, #000, transparent 72%); }
+h1, h2, h3, h4 { font-family: var(--display); line-height: 1.08; letter-spacing: -.035em; }
+a, button, input, textarea, summary { -webkit-tap-highlight-color: transparent; }
+button, a { font: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--signal); outline-offset: 4px; }
+.workspace-shell { width: min(1520px, calc(100% - clamp(0px, 4vw, 4rem))); margin: clamp(0px, 3vw, 2rem) auto; overflow: clip; border: 1px solid color-mix(in srgb, var(--line) 80%, transparent); border-radius: clamp(0px, 2vw, 1.7rem); background: color-mix(in srgb, var(--ink) 94%, transparent); box-shadow: 0 50px 140px rgba(0, 0, 0, .35); }
+.section { padding: clamp(5rem, 10vw, 9rem) clamp(1rem, 6vw, 6rem); }
+.section-heading { max-width: 48rem; margin-bottom: clamp(2rem, 5vw, 4rem); }.section-heading h2 { max-width: 18ch; margin: .25rem 0 .8rem; font-size: clamp(2rem, 4vw, 3.75rem); }.section-heading > p:last-child { max-width: 42rem; color: var(--slate); }
+.eyebrow { margin: 0; color: var(--azure); font: 700 .65rem var(--mono); letter-spacing: .09em; text-transform: uppercase; }
+.button { display: inline-flex; align-items: center; justify-content: center; gap: .65rem; min-height: 3rem; padding: .7rem 1rem; border: 1px solid var(--azure-action); border-radius: .75rem; color: #fff; background: var(--azure-action); box-shadow: 0 10px 30px rgba(49, 95, 200, .25); font-weight: 700; font-size: .8rem; text-decoration: none; transition: transform .2s ease, box-shadow .2s ease, background .2s ease; }.button:hover { transform: translateY(-2px); background: #3d6bd0; box-shadow: 0 15px 40px rgba(49, 95, 200, .35); }.button:disabled { cursor: wait; opacity: .65; }.button-secondary { color: var(--paper); border-color: var(--line-strong); background: transparent; box-shadow: none; }.button-small { min-height: 2.7rem; padding-inline: .9rem; font-size: .7rem; }.text-link { color: var(--paper); font-size: .8rem; text-underline-offset: .3rem; }
+.skip-link { position: fixed; top: .5rem; left: .5rem; z-index: 100; padding: .7rem 1rem; border-radius: .5rem; color: var(--ink); background: var(--signal); transform: translateY(-150%); }.skip-link:focus { transform: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
+@media (max-width: 700px) { .workspace-shell { width: 100%; margin: 0; border: 0; border-radius: 0; }.section { padding-inline: 1.1rem; } }

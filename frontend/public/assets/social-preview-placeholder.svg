@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Adarsh Ramakrishna portfolio preview placeholder</title>
+  <desc id="desc">Dark technical social preview with Angular, .NET and Azure developer title.</desc>
+  <defs><radialGradient id="g" cx="80%" cy="10%" r="80%"><stop stop-color="#315fc8"/><stop offset="1" stop-color="#070b14"/></radialGradient></defs>
+  <rect width="1200" height="630" fill="url(#g)"/>
+  <rect x="70" y="65" width="1060" height="500" rx="42" fill="#0d1424" stroke="#33425e"/>
+  <text x="125" y="185" fill="#55d6be" font-family="monospace" font-size="24">FULL-STACK SOFTWARE DEVELOPER</text>
+  <text x="125" y="285" fill="#f4f7ff" font-family="sans-serif" font-weight="700" font-size="68">Adarsh Ramakrishna</text>
+  <text x="125" y="365" fill="#9caac2" font-family="sans-serif" font-size="36">Angular · .NET · Microsoft Azure</text>
+  <text x="125" y="490" fill="#5b8cff" font-family="monospace" font-size="22">[REPLACE WITH FINAL SOCIAL PREVIEW]</text>
+</svg>

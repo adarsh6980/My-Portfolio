@@ -1,0 +1,32 @@
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header class="site-header">
+  <a class="brand" href="#home" [attr.aria-label]="name() + ', home'">
+    <span class="brand-mark" aria-hidden="true">AR</span>
+    <span>{{ name().split(' ')[0] }}<span class="brand-dot">.dev</span></span>
+  </a>
+
+  <button
+    #menuButton
+    class="menu-toggle"
+    type="button"
+    [attr.aria-label]="menuOpen() ? 'Close navigation' : 'Open navigation'"
+    aria-controls="primary-navigation"
+    [attr.aria-expanded]="menuOpen()"
+    (click)="toggleMenu()"
+  >
+    <span></span><span></span>
+  </button>
+
+  <nav id="primary-navigation" aria-label="Primary navigation" [class.is-open]="menuOpen()">
+    @for (item of navigation(); track item.target) {
+      <a
+        [href]="'#' + item.target"
+        [class.is-active]="activeTarget() === item.target"
+        [attr.aria-current]="activeTarget() === item.target ? 'location' : null"
+        (click)="select(item.target)"
+      >{{ item.label }}</a>
+    }
+  </nav>
+
+  <a class="button button-small header-resume" [href]="resumePath()" download>Resume <span aria-hidden="true">↗</span></a>
+</header>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: [ADD CANONICAL DOMAIN]/sitemap.xml

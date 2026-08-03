@@ -1,0 +1,20 @@
+.project-card { height: 100%; display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius-lg); background: linear-gradient(150deg, color-mix(in srgb, var(--panel) 94%, var(--azure)), var(--workspace)); box-shadow: var(--shadow-sm); transition: transform .25s ease, border-color .25s ease; }
+.project-card:hover { transform: translateY(-5px); border-color: color-mix(in srgb, var(--azure) 45%, var(--line)); }
+.project-visual { min-height: 10rem; display: grid; place-items: center; position: relative; padding: 2rem; color: var(--slate); background: radial-gradient(circle at 80% 20%, color-mix(in srgb, var(--violet) 22%, transparent), transparent 38%), linear-gradient(135deg, #0a1120, #111c33); font: 600 .65rem var(--mono); }
+.project-window { position: absolute; inset: 1rem 1rem auto; display: flex; gap: .3rem; }
+.project-window i { width: .4rem; aspect-ratio: 1; border-radius: 50%; background: var(--line-strong); }
+.project-visual img { width: 100%; height: auto; border-radius: .75rem; object-fit: cover; }
+.project-body { display: flex; flex: 1; flex-direction: column; padding: 1.4rem; }
+h3 { margin: .2rem 0 .75rem; font-size: 1.28rem; }
+.technology-list { display: flex; flex-wrap: wrap; gap: .4rem; margin: 1rem 0; }
+.technology-list span { padding: .35rem .55rem; border: 1px solid var(--line); border-radius: 999px; color: var(--slate); font: 600 .64rem var(--mono); }
+details { margin-top: auto; padding-top: .8rem; border-top: 1px solid var(--line); }
+summary { cursor: pointer; color: var(--paper); font-weight: 650; }
+dl div { margin-top: .8rem; }
+dt { color: var(--signal); font: 650 .63rem var(--mono); text-transform: uppercase; }
+dd { margin: .25rem 0 0; color: var(--slate); font-size: .85rem; }
+dd ul { margin: .25rem 0 0; padding-left: 1.1rem; }
+dd li + li { margin-top: .25rem; }
+.project-links { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: 1rem; }
+.placeholder-link { color: var(--azure); font: 600 .68rem var(--mono); }
+.project-links a { color: var(--signal); font: 650 .68rem var(--mono); text-underline-offset: .25rem; }

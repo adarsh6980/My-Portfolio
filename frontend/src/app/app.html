@@ -1,0 +1,116 @@
+<div class="page-aura" aria-hidden="true"></div>
+<div class="workspace-shell">
+  <app-header [navigation]="data.navigation" [name]="data.profile.name" [resumePath]="data.profile.resumePath" />
+
+  <main id="main-content">
+    <section id="home" class="hero section">
+      <div class="hero-copy">
+        <p class="availability"><span></span>{{ data.profile.availability }}</p>
+        <p class="hero-kicker">Hello, I’m</p>
+        <h1>{{ data.profile.name }}</h1>
+        <h2>{{ data.profile.heroTitle }}</h2>
+        <p class="hero-role">{{ data.profile.title }}</p>
+        <p class="hero-summary">{{ data.profile.valueProposition }}</p>
+        <div class="hero-meta"><span>⌖ {{ data.profile.location }}</span><span>◫ {{ data.profile.experienceYears }} experience</span></div>
+        <div class="hero-actions">
+          <a class="button" href="#projects">View projects <span aria-hidden="true">→</span></a>
+          <a class="button button-secondary" [href]="data.profile.resumePath" download>Download resume</a>
+          <a class="text-link" href="#contact">Contact me</a>
+        </div>
+        <div class="social-row" role="group" aria-label="Social links">
+          @for (link of data.socialLinks; track link.label) {
+            @if (link.placeholder) { <span><b>{{ link.label }}</b> {{ link.url }}</span> }
+            @else { <a [href]="link.url" target="_blank" rel="noopener noreferrer">{{ link.label }}</a> }
+          }
+          @if (data.profile.email.startsWith('[ADD ')) { <span><b>Email</b> {{ data.profile.email }}</span> }
+          @else { <a [href]="'mailto:' + data.profile.email">Email</a> }
+        </div>
+      </div>
+
+      <div class="hero-console" role="region" aria-label="Live full-stack architecture preview">
+        <div class="console-top"><span></span><span></span><span></span><p>portfolio.request</p><b>● online</b></div>
+        <div class="console-body">
+          <p><i>01</i><span class="code-violet">const</span> developer = &#123;</p>
+          <p><i>02</i>&nbsp;&nbsp;name: <span class="code-green">'{{ data.profile.name.split(' ')[0] }}'</span>,</p>
+          <p><i>03</i>&nbsp;&nbsp;focus: [<span class="code-green">'Angular'</span>, <span class="code-green">'.NET'</span>, <span class="code-green">'Azure'</span>],</p>
+          <p><i>04</i>&nbsp;&nbsp;approach: <span class="code-green">'build it end-to-end'</span></p>
+          <p><i>05</i>&#125;;</p>
+        </div>
+        <div class="mini-flow" aria-hidden="true">
+          <div><span>NG</span><small>Interface</small></div><b>→</b><div><span>API</span><small>Logic</small></div><b>→</b><div><span>SQL</span><small>Data</small></div>
+        </div>
+        <div class="console-status"><span><i></i> API health-check path</span><span>illustrative topology</span></div>
+      </div>
+    </section>
+
+    <div class="credibility-strip" role="list" aria-label="Professional summary">
+      <div role="listitem"><strong>{{ data.profile.experienceYears }}</strong><span>Software development experience</span></div>
+      <div role="listitem"><strong>MSc</strong><span>Software Design with AI · Ireland</span></div>
+      <div role="listitem"><strong>End-to-end</strong><span>Frontend · API · Data · Cloud</span></div>
+    </div>
+
+    <section id="about" class="section section-grid about-section">
+      <app-section-heading eyebrow="About" title="A full-stack perspective, grounded in delivery." description="I care about the whole path from an accessible interface to a reliable production service." />
+      <div class="about-copy">
+        <p class="lead">{{ data.profile.summary }}</p>
+        <p>My work centres on Angular, ASP.NET Core and Azure, supported by C#, TypeScript, Entity Framework Core and relational databases. I enjoy turning requirements into clear interfaces, deliberate APIs and maintainable deployment paths.</p>
+        <div class="education-card"><span>Now</span><div><strong>{{ data.profile.education }}</strong><p>{{ data.profile.institution }}</p></div></div>
+        <div class="education-card"><span>Foundation</span><div><strong>{{ data.profile.previousEducation }}</strong><p>Information science and engineering</p></div></div>
+      </div>
+    </section>
+
+    <section id="skills" class="section">
+      <app-section-heading eyebrow="Capabilities" title="Skills organised by how I use them." description="Clear working levels replace arbitrary percentage bars." />
+      <div class="skills-grid">
+        @for (group of data.skillGroups; track group.title) {
+          <article class="skill-card">
+            <div><h3>{{ group.title }}</h3><span class="confidence">{{ group.confidence }}</span></div>
+            <ul>@for (skill of group.skills; track skill) { <li>{{ skill }}</li> }</ul>
+          </article>
+        }
+      </div>
+    </section>
+
+    <section id="experience" class="section">
+      <app-section-heading eyebrow="Experience" title="Professional practice, placement and study." description="Each entry is editable from one typed data file as exact dates and employer details become available." />
+      <div class="timeline">
+        @for (item of data.experience; track item.role) {
+          <article class="timeline-item">
+            <div class="timeline-marker"><span></span></div>
+            <div class="timeline-meta"><p>{{ item.period }}</p><span>{{ item.kind }}</span></div>
+            <div class="timeline-content"><h3>{{ item.role }}</h3><h4>{{ item.organisation }}</h4><p>{{ item.summary }}</p><ul>@for (highlight of item.highlights; track highlight) { <li>{{ highlight }}</li> }</ul><div class="technology-list">@for (technology of item.technologies; track technology) { <span>{{ technology }}</span> }</div></div>
+          </article>
+        }
+      </div>
+    </section>
+
+    <section id="projects" class="section">
+      <app-section-heading eyebrow="Selected systems" title="Three projects that demonstrate complete engineering workflows." description="Each case study makes the problem, architecture, contribution and missing evidence explicit." />
+      <div class="projects-grid">@for (project of data.projects; track project.slug) { <app-project-card [project]="project" /> }</div>
+    </section>
+
+    <section id="architecture" class="section">
+      <app-section-heading eyebrow="Request lifecycle" title="What happens after a person clicks ‘send’." description="Select a stage to follow a validated request from the browser into durable cloud storage." />
+      <app-architecture-diagram [stages]="data.architecture" />
+    </section>
+
+    <section id="azure" class="section">
+      <app-section-heading eyebrow="Azure delivery" title="A cost-conscious path from commit to production." description="Managed services keep the operational story credible without introducing a microservice platform the portfolio does not need." />
+      <div class="cloud-layout">
+        <div class="cloud-grid">@for (practice of data.cloudPractices; track practice.title) { <article><span aria-hidden="true">◇</span><h3>{{ practice.title }}</h3><p>{{ practice.detail }}</p></article> }</div>
+        <div class="pipeline-card"><div class="pipeline-title"><span>CI/CD pipeline</span><b>GitHub Actions</b></div><ol>@for (step of data.pipeline; track step; let i = $index) { <li><span>{{ i + 1 }}</span><p>{{ step }}</p></li> }</ol></div>
+      </div>
+    </section>
+
+    <section id="contact" class="section contact-section">
+      <div>
+        <app-section-heading eyebrow="Contact" title="Let’s discuss the role, product or problem." description="The form submits to a rate-limited .NET API. No credentials are exposed in the browser." />
+        <div class="contact-points"><p><span>Email</span>{{ data.profile.email }}</p><p><span>Location</span>{{ data.profile.location }}</p><p><span>Availability</span>{{ data.profile.availability }}</p></div>
+      </div>
+      <app-contact-form />
+    </section>
+  </main>
+
+  <router-outlet />
+  <app-footer [name]="data.profile.name" [links]="data.socialLinks" [email]="data.profile.email" />
+</div>
