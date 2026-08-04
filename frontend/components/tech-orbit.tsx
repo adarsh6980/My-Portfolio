@@ -4,7 +4,7 @@ import { Reveal } from "@/components/ui/reveal";
 
 const orbits = [
   {
-    size: "w-[17.5rem] h-[17.5rem] md:w-[26rem] md:h-[26rem]",
+    size: "w-52 h-52 sm:w-64 sm:h-64 md:w-[26rem] md:h-[26rem]",
     duration: 18,
     items: [
       { label: "Angular", angle: -60 },
@@ -13,7 +13,7 @@ const orbits = [
     ],
   },
   {
-    size: "w-[24rem] h-[24rem] md:w-[34rem] md:h-[34rem]",
+    size: "w-72 h-72 sm:w-80 sm:h-80 md:w-[34rem] md:h-[34rem]",
     duration: 26,
     items: [
       { label: ".NET", angle: 0 },
@@ -25,7 +25,10 @@ const orbits = [
 export function TechOrbit() {
   return (
     <Reveal>
-      <section aria-label="Technology stack" className="relative flex h-72 w-full justify-center overflow-hidden md:h-96">
+      <section
+        aria-label="Technology stack"
+        className="relative flex h-56 w-full max-w-full justify-center overflow-hidden sm:h-64 md:h-96"
+      >
         <style>{`
           @keyframes orbit-cw {
             from { transform: rotate(var(--start-angle)) }
