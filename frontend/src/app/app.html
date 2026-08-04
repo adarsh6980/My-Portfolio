@@ -199,6 +199,27 @@
       </div>
     </section>
 
+    <section id="recognition" class="section">
+      <app-section-heading appReveal appRevealVariant="scan" eyebrow="Recognition" title="Readiness signals, not vanity metrics." description="Verifiable facts about scope and experience, plus space reserved for direct testimonials as they come in." />
+      <div class="recognition-grid">
+        @for (item of data.achievements; track item.label; let i = $index) {
+          <div class="stat-tile glass glass-tilt" appTilt [appReveal]="i * 80" [appRevealVariant]="i % 2 === 0 ? 'left' : 'right'">
+            <strong>{{ item.value }}</strong>
+            <span>{{ item.label }}</span>
+            <p>{{ item.detail }}</p>
+          </div>
+        }
+      </div>
+      <div class="testimonial-grid">
+        @for (item of data.testimonials; track item.name; let i = $index) {
+          <blockquote class="testimonial-card glass" [appReveal]="120 + i * 90" [appRevealVariant]="i % 2 === 0 ? 'left' : 'right'">
+            <p>&ldquo;{{ item.quote }}&rdquo;</p>
+            <footer><strong>{{ item.name }}</strong><span>{{ item.role }}</span></footer>
+          </blockquote>
+        }
+      </div>
+    </section>
+
     <section id="contact" class="section contact-section">
       <div>
         <app-section-heading appReveal appRevealVariant="scan" eyebrow="Contact" title="Let's discuss the role, product or problem." description="The form submits to a rate-limited .NET API. No credentials are exposed in the browser." />

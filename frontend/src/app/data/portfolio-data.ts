@@ -175,4 +175,22 @@ export const PORTFOLIO_DATA: PortfolioData = {
     'Angular frontend deploys last',
     'Application Insights monitors production',
   ],
+  achievements: [
+    { value: '3+ yrs', label: 'Professional experience', detail: 'Shipped production features across frontend, backend and data at Resideo Smart Home Technologies.' },
+    { value: '3', label: 'End-to-end case studies', detail: 'Each project below spans the full request lifecycle from browser to Azure SQL, not an isolated demo.' },
+    { value: 'MSc', label: 'Software Design with AI', detail: 'Completing a master’s at TUS Athlone alongside applied engineering work.' },
+    { value: '5', label: 'Core skill domains', detail: 'Frontend, backend, data, cloud/DevOps and tooling — each backed by named tools, not an aggregate score.' },
+  ],
+  testimonials: [
+    {
+      quote: '[ADD TESTIMONIAL QUOTE — ask a manager, mentor or collaborator for a short, specific line about working with you]',
+      name: '[ADD NAME]',
+      role: '[ADD ROLE, COMPANY]',
+    },
+    {
+      quote: '[ADD TESTIMONIAL QUOTE]',
+      name: '[ADD NAME]',
+      role: '[ADD ROLE, COMPANY]',
+    },
+  ],
 };

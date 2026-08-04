@@ -51,6 +51,18 @@ export interface ArchitectureStage {
   technology: string;
 }
 
+export interface Achievement {
+  value: string;
+  label: string;
+  detail: string;
+}
+
+export interface Testimonial {
+  quote: string;
+  name: string;
+  role: string;
+}
+
 export interface PortfolioData {
   profile: {
     name: string;
@@ -75,4 +87,6 @@ export interface PortfolioData {
   architecture: readonly ArchitectureStage[];
   cloudPractices: readonly { title: string; detail: string }[];
   pipeline: readonly string[];
+  achievements: readonly Achievement[];
+  testimonials: readonly Testimonial[];
 }
