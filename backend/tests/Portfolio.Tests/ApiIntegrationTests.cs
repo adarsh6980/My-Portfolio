@@ -38,6 +38,20 @@ public sealed class ApiIntegrationTests : IClassFixture<PortfolioApiFactory>
     }
 
     [Fact]
+    public async Task Frontend_csp_supports_Angular_styles_without_allowing_inline_scripts()
+    {
+        var response = await _client.GetAsync("/");
+
+        var policy = Assert.Single(response.Headers.GetValues("Content-Security-Policy"));
+        var directives = policy.Split(';', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+        var styleDirective = Assert.Single(directives, directive => directive.StartsWith("style-src ", StringComparison.Ordinal));
+        var scriptDirective = Assert.Single(directives, directive => directive.StartsWith("script-src ", StringComparison.Ordinal));
+
+        Assert.Contains("'unsafe-inline'", styleDirective, StringComparison.Ordinal);
+        Assert.DoesNotContain("'unsafe-inline'", scriptDirective, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public async Task Projects_endpoint_returns_the_three_supplied_case_studies()
     {
         var projects = await _client.GetFromJsonAsync<ProjectResponse[]>("/api/projects");

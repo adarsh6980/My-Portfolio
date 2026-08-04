@@ -93,7 +93,7 @@ builder.Services.AddRateLimiter(options =>
 
 var app = builder.Build();
 const string apiContentSecurityPolicy = "default-src 'none'; frame-ancestors 'none'; base-uri 'none'";
-const string frontendContentSecurityPolicy = "default-src 'self'; script-src 'self' 'sha256-sRPuQG7yc65LKWht/vVFEbZtQkpYSC7fkYHVG09IU20='; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https: http://localhost:5050; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'";
+const string frontendContentSecurityPolicy = "default-src 'self'; script-src 'self' 'sha256-sRPuQG7yc65LKWht/vVFEbZtQkpYSC7fkYHVG09IU20='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https: http://localhost:5050; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'";
 
 if (trustForwardedHeaders) app.UseForwardedHeaders();
 app.UseExceptionHandler();

@@ -97,6 +97,7 @@ jobs:
           node -e 'const fs = require("node:fs"); fs.writeFileSync("public/assets/config.js", "globalThis.__PORTFOLIO_CONFIG__ = Object.freeze({ apiUrl: " + JSON.stringify("") + " });\n");'
           npm ci
           npm run build -- --configuration production
+          node scripts/verify-production-csp-compatibility.mjs
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
