@@ -5,6 +5,7 @@ import { FeatureCards } from "@/components/feature-cards";
 import { Projects } from "@/components/projects";
 import { SocialProof } from "@/components/social-proof";
 import { ExperienceTimeline } from "@/components/experience-timeline";
+import { Footer } from "@/components/footer";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
       <Projects />
       <SocialProof />
       <ExperienceTimeline />
+      <Footer />
     </main>
   );
 }
