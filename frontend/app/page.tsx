@@ -4,6 +4,7 @@ import { TechOrbit } from "@/components/tech-orbit";
 import { FeatureCards } from "@/components/feature-cards";
 import { Projects } from "@/components/projects";
 import { SocialProof } from "@/components/social-proof";
+import { ExperienceTimeline } from "@/components/experience-timeline";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <FeatureCards />
       <Projects />
       <SocialProof />
+      <ExperienceTimeline />
     </main>
   );
 }
