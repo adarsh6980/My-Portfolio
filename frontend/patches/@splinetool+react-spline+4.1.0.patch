@@ -1,0 +1,20 @@
+diff --git a/node_modules/@splinetool/react-spline/package.json b/node_modules/@splinetool/react-spline/package.json
+index 3087cf5..ce47ca0 100644
+--- a/node_modules/@splinetool/react-spline/package.json
++++ b/node_modules/@splinetool/react-spline/package.json
+@@ -11,11 +11,13 @@
+   "exports": {
+     ".": {
+       "types": "./dist/Spline.d.ts",
+-      "import": "./dist/react-spline.js"
++      "import": "./dist/react-spline.js",
++      "default": "./dist/react-spline.js"
+     },
+     "./next": {
+       "types": "./dist/next/SplineNext.d.ts",
+-      "import": "./dist/react-spline-next.js"
++      "import": "./dist/react-spline-next.js",
++      "default": "./dist/react-spline-next.js"
+     }
+   },
+   "scripts": {

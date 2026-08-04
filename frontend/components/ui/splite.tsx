@@ -1,8 +1,15 @@
 "use client";
 
-import { Suspense, lazy } from "react";
+import dynamic from "next/dynamic";
 
-const Spline = lazy(() => import("@splinetool/react-spline"));
+const Spline = dynamic(() => import("@splinetool/react-spline"), {
+  ssr: false,
+  loading: () => (
+    <div className="flex h-full w-full items-center justify-center">
+      <span className="h-8 w-8 animate-spin rounded-full border-2 border-accent border-t-transparent" />
+    </div>
+  ),
+});
 
 interface SplineSceneProps {
   scene: string;
@@ -10,15 +17,5 @@ interface SplineSceneProps {
 }
 
 export function SplineScene({ scene, className }: SplineSceneProps) {
-  return (
-    <Suspense
-      fallback={
-        <div className="flex h-full w-full items-center justify-center">
-          <span className="h-8 w-8 animate-spin rounded-full border-2 border-accent border-t-transparent" />
-        </div>
-      }
-    >
-      <Spline scene={scene} className={className} />
-    </Suspense>
-  );
+  return <Spline scene={scene} className={className} />;
 }
