@@ -11,6 +11,7 @@ export class Header {
   readonly navigation = input.required<readonly { label: string; target: string }[]>();
   readonly name = input.required<string>();
   readonly resumePath = input.required<string>();
+  readonly socialLinks = input.required<readonly { label: string; url: string; placeholder: boolean }[]>();
   readonly menuButton = viewChild<ElementRef<HTMLButtonElement>>('menuButton');
   readonly menuOpen = signal(false);
   readonly activeTarget = signal('home');

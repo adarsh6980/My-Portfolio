@@ -1,12 +1,12 @@
-:host { position: fixed; inset: 0; z-index: 50; overflow: auto; display: block; padding: clamp(1rem, 5vw, 4rem); background: color-mix(in srgb, var(--ink) 96%, transparent); backdrop-filter: blur(22px); }
-.case-study-page { width: min(70rem, 100%); min-height: calc(100svh - 2rem); margin: 0 auto; padding: clamp(1.4rem, 5vw, 4rem); border: 1px solid var(--line-strong); border-radius: var(--radius-xl); background: var(--workspace); box-shadow: var(--shadow-xl); }
-.back-link { display: inline-flex; margin-bottom: 3rem; color: var(--signal); font: 650 .72rem var(--mono); text-underline-offset: .3rem; }
-h2 { max-width: 16ch; margin: .5rem 0 1rem; font-size: clamp(2.4rem, 6vw, 5rem); }
-.lead { max-width: 48rem; color: var(--slate); font-size: 1.1rem; }
+:host { position: fixed; inset: 0; z-index: 50; overflow: auto; display: block; padding: clamp(1rem, 5vw, 4rem); background: color-mix(in srgb, var(--navy) 96%, transparent); backdrop-filter: blur(22px); }
+.case-study-page { width: min(70rem, 100%); min-height: calc(100svh - 2rem); margin: 0 auto; padding: clamp(1.4rem, 5vw, 4rem); border-radius: var(--radius-lg); }
+.back-link { display: inline-flex; margin-bottom: 3rem; color: var(--accent); font-weight: 700; font-size: .82rem; text-underline-offset: .3rem; }
+h2 { max-width: 16ch; margin: .5rem 0 1rem; font-size: clamp(2.2rem, 5.4vw, 4.2rem); }
+.lead { max-width: 48rem; color: var(--muted); font-size: 1.1rem; }
 .case-study-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 2.5rem; }
-section { padding: 1.25rem; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--panel); }
-h3 { margin-top: 0; color: var(--paper); }
-section p, li { color: var(--slate); }
+section { padding: 1.3rem; border-radius: var(--radius-md); }
+h3 { margin-top: 0; color: var(--accent); font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; }
+section p, li { color: var(--muted); }
 .technology-list { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
-.technology-list span { padding: .4rem .65rem; border: 1px solid var(--line); border-radius: 999px; color: var(--slate); font: .64rem var(--mono); }
+.technology-list span { padding: .4rem .7rem; border: 1px solid var(--hairline); border-radius: var(--radius-pill); color: var(--muted); font: .64rem var(--mono); }
 @media (max-width: 700px) { :host { padding: 0; } .case-study-page { min-height: 100svh; border: 0; border-radius: 0; } .case-study-grid { grid-template-columns: 1fr; } }

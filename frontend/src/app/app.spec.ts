@@ -20,7 +20,7 @@ describe('App', () => {
 
     expect(compiled.querySelector('h1')?.textContent).toContain('Adarsh Ramakrishna');
     expect(compiled.textContent).toContain('Full-Stack Software Developer');
-    expect(compiled.textContent).toContain('2.8 years');
+    expect(compiled.textContent).toContain('3+ years');
     expect(compiled.querySelectorAll('main section').length).toBeGreaterThanOrEqual(8);
     expect(compiled.querySelector('[href="#projects"]')).toBeTruthy();
     expect(compiled.querySelector('[href="#contact"]')).toBeTruthy();

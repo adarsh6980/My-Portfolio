@@ -1,16 +1,16 @@
-<aside class="case-study-page" role="dialog" aria-modal="true" aria-labelledby="case-study-title">
+<aside class="case-study-page glass glass-blur" role="dialog" aria-modal="true" aria-labelledby="case-study-title">
   <a #backLink class="back-link" routerLink="/" fragment="projects">← Back to all projects</a>
   @if (project(); as item) {
     <p class="eyebrow">Full case study</p>
     <h2 id="case-study-title">{{ item.title }}</h2>
     <p class="lead">{{ item.solution }}</p>
     <div class="case-study-grid">
-      <section><h3>Problem</h3><p>{{ item.problem }}</p></section>
-      <section><h3>My contribution</h3><p>{{ item.contribution }}</p></section>
-      <section><h3>Architecture</h3><p>{{ item.architecture }}</p></section>
-      <section><h3>Result</h3><p>{{ item.result }}</p></section>
-      <section><h3>Key features</h3><ul>@for (feature of item.features; track feature) { <li>{{ feature }}</li> }</ul></section>
-      <section><h3>Technical challenges</h3><ul>@for (challenge of item.challenges; track challenge) { <li>{{ challenge }}</li> }</ul></section>
+      <section class="glass"><h3>Problem</h3><p>{{ item.problem }}</p></section>
+      <section class="glass"><h3>My contribution</h3><p>{{ item.contribution }}</p></section>
+      <section class="glass"><h3>Architecture</h3><p>{{ item.architecture }}</p></section>
+      <section class="glass"><h3>Result</h3><p>{{ item.result }}</p></section>
+      <section class="glass"><h3>Key features</h3><ul>@for (feature of item.features; track feature) { <li>{{ feature }}</li> }</ul></section>
+      <section class="glass"><h3>Technical challenges</h3><ul>@for (challenge of item.challenges; track challenge) { <li>{{ challenge }}</li> }</ul></section>
     </div>
     <div class="technology-list" role="list" aria-label="Technology stack">@for (technology of item.technologies; track technology) { <span role="listitem">{{ technology }}</span> }</div>
   } @else {

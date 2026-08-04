@@ -4,6 +4,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   selector: 'app-section-heading',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<div class="section-heading"><p class="eyebrow">{{ eyebrow() }}</p><h2>{{ title() }}</h2><p>{{ description() }}</p></div>`,
+  styles: [`:host { display: block; }`],
 })
 export class SectionHeading {
   readonly eyebrow = input.required<string>();

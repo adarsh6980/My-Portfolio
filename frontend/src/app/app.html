@@ -1,70 +1,157 @@
-<div class="page-aura" aria-hidden="true"></div>
+<app-matrix-rain aria-hidden="true" />
+<div class="ambient-bg" aria-hidden="true">
+  <span class="ambient-blob blob-1"></span>
+  <span class="ambient-blob blob-2"></span>
+  <span class="ambient-blob blob-3"></span>
+</div>
+
 <div class="workspace-shell">
-  <app-header [navigation]="data.navigation" [name]="data.profile.name" [resumePath]="data.profile.resumePath" />
+  <app-header [navigation]="data.navigation" [name]="data.profile.name" [resumePath]="data.profile.resumePath" [socialLinks]="data.socialLinks" />
 
   <main id="main-content">
+    <div class="hero-viewport">
     <section id="home" class="hero section">
       <div class="hero-copy">
-        <p class="availability"><span></span>{{ data.profile.availability }}</p>
-        <p class="hero-kicker">Hello, I’m</p>
-        <h1>{{ data.profile.name }}</h1>
-        <h2>{{ data.profile.heroTitle }}</h2>
+        <div class="circuit-texture" aria-hidden="true"></div>
+        <p class="eyebrow">{{ data.profile.availability }}</p>
+
+        <h1>
+          <span class="hero-line hero-line-hello">Hello <i class="tag">&lt;h1&gt;</i></span>
+          <span class="hero-line">Im <span class="accent-name">{{ data.profile.name }}</span>,</span>
+          <span class="hero-line">Full-Stack Developer <i class="tag">&lt;/h1&gt;</i></span>
+        </h1>
+
+        <p class="hero-summary"><i class="tag">&lt;p&gt;</i> {{ data.profile.valueProposition }} <i class="tag">&lt;/p&gt;</i></p>
         <p class="hero-role">{{ data.profile.title }}</p>
-        <p class="hero-summary">{{ data.profile.valueProposition }}</p>
-        <div class="hero-meta"><span>⌖ {{ data.profile.location }}</span><span>◫ {{ data.profile.experienceYears }} experience</span></div>
+
         <div class="hero-actions">
-          <a class="button" href="#projects">View projects <span aria-hidden="true">→</span></a>
-          <a class="button button-secondary" [href]="data.profile.resumePath" download>Download resume</a>
-          <a class="text-link" href="#contact">Contact me</a>
-        </div>
-        <div class="social-row" role="group" aria-label="Social links">
-          @for (link of data.socialLinks; track link.label) {
-            @if (link.placeholder) { <span><b>{{ link.label }}</b> {{ link.url }}</span> }
-            @else { <a [href]="link.url" target="_blank" rel="noopener noreferrer">{{ link.label }}</a> }
-          }
-          @if (data.profile.email.startsWith('[ADD ')) { <span><b>Email</b> {{ data.profile.email }}</span> }
-          @else { <a [href]="'mailto:' + data.profile.email">Email</a> }
+          <a class="button" href="#projects">View my work <span aria-hidden="true">→</span></a>
+          <a class="button button-secondary" [href]="data.profile.resumePath" download>Download résumé</a>
         </div>
       </div>
 
-      <div class="hero-console" role="region" aria-label="Live full-stack architecture preview">
-        <div class="console-top"><span></span><span></span><span></span><p>portfolio.request</p><b>● online</b></div>
-        <div class="console-body">
-          <p><i>01</i><span class="code-violet">const</span> developer = &#123;</p>
-          <p><i>02</i>&nbsp;&nbsp;name: <span class="code-green">'{{ data.profile.name.split(' ')[0] }}'</span>,</p>
-          <p><i>03</i>&nbsp;&nbsp;focus: [<span class="code-green">'Angular'</span>, <span class="code-green">'.NET'</span>, <span class="code-green">'Azure'</span>],</p>
-          <p><i>04</i>&nbsp;&nbsp;approach: <span class="code-green">'build it end-to-end'</span></p>
-          <p><i>05</i>&#125;;</p>
+      <div class="hero-visual">
+        <div class="visual-blob" aria-hidden="true"></div>
+
+        <div class="floating-badges" aria-hidden="true">
+          <span class="badge badge-angular">
+            <span class="hex badge-icon"><svg viewBox="0 0 40 40"><polygon points="20,3 35,9 32,30 20,37 8,30 5,9" fill="#dd0031"/><path d="M20 9 12 27h3.2l1.6-4h6.4l1.6 4H28L20 9Zm0 6.2 2.3 5.6h-4.6L20 15.2Z" fill="#fff"/></svg></span>
+            <em>Angular</em>
+          </span>
+          <span class="badge badge-dotnet">
+            <span class="hex badge-icon"><svg viewBox="0 0 40 40"><rect width="40" height="40" fill="#512bd4"/><text x="20" y="25" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" font-weight="700" fill="#fff">C#</text></svg></span>
+            <em>.NET</em>
+          </span>
+          <span class="badge badge-azure">
+            <span class="hex badge-icon"><svg viewBox="0 0 40 40"><rect width="40" height="40" fill="#0078d4"/><path d="M16 8h6l-7 17h9l-11 8 4-13H10L16 8Z" fill="#fff"/></svg></span>
+            <em>Azure</em>
+          </span>
         </div>
-        <div class="mini-flow" aria-hidden="true">
-          <div><span>NG</span><small>Interface</small></div><b>→</b><div><span>API</span><small>Logic</small></div><b>→</b><div><span>SQL</span><small>Data</small></div>
+
+        <div class="avatar-panel hud-frame hud-scan glass">
+          <p class="avatar-panel-label"><span></span> LIVE · BUILDING</p>
+          <div class="avatar" role="img" aria-label="Illustrated avatar of Adarsh typing at his desk">
+            <svg viewBox="0 0 260 220" class="avatar-svg">
+              <ellipse cx="130" cy="205" rx="98" ry="9" fill="#05070f" opacity=".4"/>
+              <path d="M72 206q-8-84 28-96h60q36 12 28 96Z" fill="#161b30" opacity=".55"/>
+              <rect x="106" y="118" width="40" height="10" fill="var(--navy-deep)"/>
+              <rect x="50" y="72" width="160" height="46" rx="4" fill="var(--navy-deep)" stroke="var(--hud-cyan)" stroke-width="2"/>
+              <text x="130" y="101" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="14" fill="var(--hud-cyan)">&lt;/&gt;</text>
+              <path d="M82 208c-2-40 18-72 48-72s50 32 48 72" fill="var(--accent)"/>
+              <line x1="100" y1="146" x2="112" y2="174" stroke="var(--accent)" stroke-width="15" stroke-linecap="round"/>
+              <line x1="160" y1="146" x2="148" y2="174" stroke="var(--accent)" stroke-width="15" stroke-linecap="round"/>
+              <circle cx="130" cy="93" r="38" fill="#f0bb8d"/>
+              <path d="M92 90c0-25 17-44 38-44s38 19 38 44c-8-6-13-15-15-15-7 9-17 5-24-2-9 10-24 11-37 17Z" fill="#20264a"/>
+              <g class="avatar-eyes">
+                <rect x="112" y="93" width="9" height="6" rx="3" fill="#181d33"/>
+                <rect x="139" y="93" width="9" height="6" rx="3" fill="#181d33"/>
+              </g>
+              <rect x="103" y="85" width="26" height="18" rx="7" fill="#181d33" opacity=".12" stroke="#181d33" stroke-width="3"/>
+              <rect x="132" y="85" width="26" height="18" rx="7" fill="#181d33" opacity=".12" stroke="#181d33" stroke-width="3"/>
+              <line x1="129" y1="93" x2="132" y2="93" stroke="#181d33" stroke-width="3"/>
+              <path d="M120 115q10 8 20 0" stroke="#7a4a2c" stroke-width="3" fill="none" stroke-linecap="round"/>
+              <rect x="16" y="178" width="228" height="14" rx="5" fill="#0b0f20"/>
+              <rect x="16" y="172" width="228" height="6" rx="3" fill="#151a30"/>
+              <rect x="98" y="162" width="64" height="17" rx="3" fill="var(--navy-card)" stroke="var(--hairline-strong)" stroke-width="1.5"/>
+              <g fill="var(--hairline-strong)">
+                <rect x="103" y="166" width="6" height="4" rx="1"/><rect x="112" y="166" width="6" height="4" rx="1"/><rect x="121" y="166" width="6" height="4" rx="1"/><rect x="130" y="166" width="6" height="4" rx="1"/><rect x="139" y="166" width="6" height="4" rx="1"/><rect x="148" y="166" width="6" height="4" rx="1"/>
+              </g>
+              <g class="avatar-hand hand-left"><ellipse cx="111" cy="176" rx="8" ry="6" fill="#f0bb8d"/></g>
+              <g class="avatar-hand hand-right"><ellipse cx="149" cy="176" rx="8" ry="6" fill="#f0bb8d"/></g>
+            </svg>
+          </div>
         </div>
-        <div class="console-status"><span><i></i> API health-check path</span><span>illustrative topology</span></div>
+
       </div>
     </section>
 
-    <div class="credibility-strip" role="list" aria-label="Professional summary">
-      <div role="listitem"><strong>{{ data.profile.experienceYears }}</strong><span>Software development experience</span></div>
-      <div role="listitem"><strong>MSc</strong><span>Software Design with AI · Ireland</span></div>
-      <div role="listitem"><strong>End-to-end</strong><span>Frontend · API · Data · Cloud</span></div>
+    <div class="hero-dashboard hud-frame glass glass-blur">
+      <div class="dash-readouts">
+        <div class="dash-readout">
+          <span class="dash-tag">[1]</span>
+          <div class="dash-readout-body">
+            <strong>MSc</strong>
+            <span class="dash-readout-sub">Software Design with AI</span>
+            <div class="dash-bar"><i></i></div>
+            <a class="dash-link" href="#about">Details <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+        <div class="dash-readout">
+          <span class="dash-tag">[2]</span>
+          <div class="dash-readout-body">
+            <strong>{{ data.profile.experienceYears }}</strong>
+            <span class="dash-readout-sub">Professional experience</span>
+            <div class="dash-bar"><i></i></div>
+            <a class="dash-link" href="#experience">Details <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+
+      <a class="dash-radar" href="#projects">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="46" fill="none" stroke="var(--hud-cyan)" stroke-opacity=".25"/>
+          <circle cx="50" cy="50" r="30" fill="none" stroke="var(--hud-cyan)" stroke-opacity=".25"/>
+          <circle cx="50" cy="50" r="14" fill="none" stroke="var(--hud-cyan)" stroke-opacity=".25"/>
+          <g class="radar-sweep"><path d="M50 50 L50 4 A46 46 0 0 1 88 28 Z" fill="var(--hud-cyan)" opacity=".22"/></g>
+          <circle class="radar-blip" cx="66" cy="34" r="2.4" fill="var(--hud-cyan)"/>
+          <circle class="radar-blip" cx="34" cy="62" r="2" fill="var(--hud-cyan)"/>
+          <circle class="radar-blip" cx="60" cy="68" r="1.6" fill="var(--hud-cyan)"/>
+        </svg>
+        <span>View My Work</span>
+      </a>
+
+      <div class="dash-badges">
+        <span class="dash-badges-label">Core expertise</span>
+        <div class="dash-badges-row">
+          @for (group of data.skillGroups; track group.title) {
+            <span class="hex expertise-chip glass">{{ group.title.split(' ')[0] }}</span>
+          }
+        </div>
+      </div>
+    </div>
     </div>
 
     <section id="about" class="section section-grid about-section">
-      <app-section-heading eyebrow="About" title="A full-stack perspective, grounded in delivery." description="I care about the whole path from an accessible interface to a reliable production service." />
+      <app-section-heading appReveal appRevealVariant="scan" eyebrow="About" title="A full-stack perspective, grounded in delivery." description="I care about the whole path from an accessible interface to a reliable production service." />
       <div class="about-copy">
-        <p class="lead">{{ data.profile.summary }}</p>
-        <p>My work centres on Angular, ASP.NET Core and Azure, supported by C#, TypeScript, Entity Framework Core and relational databases. I enjoy turning requirements into clear interfaces, deliberate APIs and maintainable deployment paths.</p>
-        <div class="education-card"><span>Now</span><div><strong>{{ data.profile.education }}</strong><p>{{ data.profile.institution }}</p></div></div>
-        <div class="education-card"><span>Foundation</span><div><strong>{{ data.profile.previousEducation }}</strong><p>Information science and engineering</p></div></div>
+        <p class="lead" appReveal>{{ data.profile.summary }}</p>
+        <p [appReveal]="60">My work centres on Angular, ASP.NET Core and Azure, supported by C#, TypeScript, Entity Framework Core and relational databases. I enjoy turning requirements into clear interfaces, deliberate APIs and maintainable deployment paths.</p>
+        <div class="education-card glass" appRevealVariant="left" [appReveal]="80"><span>Now</span><div><strong>{{ data.profile.education }}</strong><p>{{ data.profile.institution }}</p></div></div>
+        <div class="education-card glass" appRevealVariant="right" [appReveal]="160"><span>Foundation</span><div><strong>{{ data.profile.previousEducation }}</strong><p>Information science and engineering</p></div></div>
       </div>
     </section>
 
     <section id="skills" class="section">
-      <app-section-heading eyebrow="Capabilities" title="Skills organised by how I use them." description="Clear working levels replace arbitrary percentage bars." />
+      <app-section-heading appReveal appRevealVariant="scan" eyebrow="Capabilities" title="Skills organised by how I use them." description="Four honest tiers, not arbitrary percentage bars." />
       <div class="skills-grid">
-        @for (group of data.skillGroups; track group.title) {
-          <article class="skill-card">
-            <div><h3>{{ group.title }}</h3><span class="confidence">{{ group.confidence }}</span></div>
+        @for (group of data.skillGroups; track group.title; let i = $index) {
+          <article class="skill-card glass glass-tilt" appTilt [appReveal]="(i % 2) * 90" [appRevealVariant]="i % 2 === 0 ? 'left' : 'right'">
+            <div>
+              <div class="tier-gauge" aria-hidden="true">
+                <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15" fill="none" stroke="var(--hairline-strong)" stroke-width="3"/><circle cx="18" cy="18" r="15" fill="none" stroke="var(--hud-cyan)" stroke-width="3" stroke-linecap="round" [attr.stroke-dasharray]="ringCircumference" [attr.stroke-dashoffset]="confidenceOffset(group.confidence)" transform="rotate(-90 18 18)"/></svg>
+              </div>
+              <div class="skill-heading"><h3>{{ group.title }}</h3><span class="confidence">{{ group.confidence }}</span></div>
+            </div>
             <ul>@for (skill of group.skills; track skill) { <li>{{ skill }}</li> }</ul>
           </article>
         }
@@ -72,42 +159,49 @@
     </section>
 
     <section id="experience" class="section">
-      <app-section-heading eyebrow="Experience" title="Professional practice, placement and study." description="Each entry is editable from one typed data file as exact dates and employer details become available." />
-      <div class="timeline">
-        @for (item of data.experience; track item.role) {
-          <article class="timeline-item">
-            <div class="timeline-marker"><span></span></div>
-            <div class="timeline-meta"><p>{{ item.period }}</p><span>{{ item.kind }}</span></div>
-            <div class="timeline-content"><h3>{{ item.role }}</h3><h4>{{ item.organisation }}</h4><p>{{ item.summary }}</p><ul>@for (highlight of item.highlights; track highlight) { <li>{{ highlight }}</li> }</ul><div class="technology-list">@for (technology of item.technologies; track technology) { <span>{{ technology }}</span> }</div></div>
-          </article>
+      <app-section-heading appReveal appRevealVariant="scan" eyebrow="Experience" title="Revision history of professional practice." description="Newest revision first. Each entry is editable from one typed data file as exact dates become available." />
+      <div class="revision-table glass">
+        <div class="revision-head" role="row"><span role="columnheader">Rev</span><span role="columnheader">Period</span><span role="columnheader">Description</span></div>
+        @for (item of data.experience; track item.role; let i = $index; let count = $count) {
+          <div class="revision-row" role="row" [class.is-current]="i === 0" [appReveal]="i * 90" [appRevealVariant]="i % 2 === 0 ? 'left' : 'right'">
+            <span class="rev-id" role="cell">R{{ (count - i) < 10 ? '0' + (count - i) : (count - i) }}</span>
+            <div class="rev-period" role="cell"><strong>{{ item.period }}</strong><em>{{ item.kind }}</em></div>
+            <div class="rev-desc" role="cell">
+              <h3>{{ item.role }}</h3>
+              <h4>{{ item.organisation }}</h4>
+              <p>{{ item.summary }}</p>
+              <ul>@for (highlight of item.highlights; track highlight) { <li>{{ highlight }}</li> }</ul>
+              <div class="technology-list">@for (technology of item.technologies; track technology) { <span>{{ technology }}</span> }</div>
+            </div>
+          </div>
         }
       </div>
     </section>
 
     <section id="projects" class="section">
-      <app-section-heading eyebrow="Selected systems" title="Three projects that demonstrate complete engineering workflows." description="Each case study makes the problem, architecture, contribution and missing evidence explicit." />
-      <div class="projects-grid">@for (project of data.projects; track project.slug) { <app-project-card [project]="project" /> }</div>
+      <app-section-heading appReveal appRevealVariant="scan" eyebrow="Selected systems" title="Three projects that demonstrate complete engineering workflows." description="Each case study makes the problem, architecture, contribution and missing evidence explicit." />
+      <div class="projects-grid">@for (project of data.projects; track project.slug; let i = $index) { <app-project-card [project]="project" [revealDelay]="i * 110" [variantIndex]="i % 3" /> }</div>
     </section>
 
     <section id="architecture" class="section">
-      <app-section-heading eyebrow="Request lifecycle" title="What happens after a person clicks ‘send’." description="Select a stage to follow a validated request from the browser into durable cloud storage." />
-      <app-architecture-diagram [stages]="data.architecture" />
+      <app-section-heading appReveal appRevealVariant="scan" eyebrow="Request lifecycle" title="What happens after a person clicks 'send'." description="Select a stage to follow a validated request from the browser into durable cloud storage." />
+      <app-architecture-diagram appReveal [stages]="data.architecture" />
     </section>
 
     <section id="azure" class="section">
-      <app-section-heading eyebrow="Azure delivery" title="A cost-conscious path from commit to production." description="Managed services keep the operational story credible without introducing a microservice platform the portfolio does not need." />
+      <app-section-heading appReveal appRevealVariant="scan" eyebrow="Azure delivery" title="A cost-conscious path from commit to production." description="Managed services keep the operational story credible without introducing a microservice platform the portfolio does not need." />
       <div class="cloud-layout">
-        <div class="cloud-grid">@for (practice of data.cloudPractices; track practice.title) { <article><span aria-hidden="true">◇</span><h3>{{ practice.title }}</h3><p>{{ practice.detail }}</p></article> }</div>
-        <div class="pipeline-card"><div class="pipeline-title"><span>CI/CD pipeline</span><b>GitHub Actions</b></div><ol>@for (step of data.pipeline; track step; let i = $index) { <li><span>{{ i + 1 }}</span><p>{{ step }}</p></li> }</ol></div>
+        <div class="cloud-grid">@for (practice of data.cloudPractices; track practice.title; let i = $index) { <article class="glass" [appReveal]="(i % 2) * 80" [appRevealVariant]="i % 2 === 0 ? 'left' : 'right'"><span aria-hidden="true">◆</span><h3>{{ practice.title }}</h3><p>{{ practice.detail }}</p></article> }</div>
+        <div class="pipeline-card glass" [appReveal]="120"><div class="pipeline-title"><span>CI/CD pipeline</span><b>GitHub Actions</b></div><ol>@for (step of data.pipeline; track step; let i = $index) { <li><span>{{ i + 1 }}</span><p>{{ step }}</p></li> }</ol></div>
       </div>
     </section>
 
     <section id="contact" class="section contact-section">
       <div>
-        <app-section-heading eyebrow="Contact" title="Let’s discuss the role, product or problem." description="The form submits to a rate-limited .NET API. No credentials are exposed in the browser." />
-        <div class="contact-points"><p><span>Email</span>{{ data.profile.email }}</p><p><span>Location</span>{{ data.profile.location }}</p><p><span>Availability</span>{{ data.profile.availability }}</p></div>
+        <app-section-heading appReveal appRevealVariant="scan" eyebrow="Contact" title="Let's discuss the role, product or problem." description="The form submits to a rate-limited .NET API. No credentials are exposed in the browser." />
+        <div class="contact-points" [appReveal]="60"><p><span>Email</span>{{ data.profile.email }}</p><p><span>Location</span>{{ data.profile.location }}</p><p><span>Availability</span>{{ data.profile.availability }}</p></div>
       </div>
-      <app-contact-form />
+      <app-contact-form appReveal />
     </section>
   </main>
 

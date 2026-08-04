@@ -1,8 +1,18 @@
-<article class="project-card">
+<article class="project-card glass glass-tilt variant-{{ variantIndex() }}" appTilt [appReveal]="revealDelay()" [appRevealVariant]="revealVariant()">
   <div class="project-visual" [attr.role]="isPlaceholder(project().screenshot) ? 'img' : null" [attr.aria-label]="isPlaceholder(project().screenshot) ? 'Screenshot placeholder for ' + project().title : null">
-    @if (isPlaceholder(project().screenshot)) { <span>{{ project().screenshot }}</span> }
+    @if (isPlaceholder(project().screenshot)) {
+      <div class="visual-orbit" aria-hidden="true">
+        <span class="orbit-dot d1"></span>
+        <span class="orbit-dot d2"></span>
+        <span class="orbit-dot d3"></span>
+        <svg class="orbit-lines" viewBox="0 0 200 120" preserveAspectRatio="none">
+          <path d="M30 95 L100 40 L170 95" />
+          <path d="M100 40 L100 95" />
+        </svg>
+      </div>
+      <span class="visual-caption">{{ project().screenshot }}</span>
+    }
     @else { <img [src]="project().screenshot" [alt]="project().screenshotAlt" width="640" height="360" loading="lazy" decoding="async" /> }
-    <div class="project-window" aria-hidden="true"><i></i><i></i><i></i></div>
   </div>
   <div class="project-body">
     <p class="eyebrow">{{ project().eyebrow }}</p>
