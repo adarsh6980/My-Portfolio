@@ -20,7 +20,7 @@ frontend/coverage/
 *.db
 *.db-shm
 *.db-wal
-data/
+/data/
 
 # Editors and OS
 .DS_Store
