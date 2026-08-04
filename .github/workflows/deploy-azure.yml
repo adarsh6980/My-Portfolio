@@ -96,6 +96,7 @@ jobs:
         run: |
           npm ci
           npm audit --audit-level=high
+          npm test
           npm run build
           npm run test:deployment
       - uses: actions/setup-dotnet@v4

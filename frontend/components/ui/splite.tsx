@@ -1,6 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import type { Application } from "@splinetool/runtime";
+import { improveRobotVisibility } from "@/lib/spline-visibility.mjs";
 
 const Spline = dynamic(() => import("@splinetool/react-spline"), {
   ssr: false,
@@ -17,5 +19,9 @@ interface SplineSceneProps {
 }
 
 export function SplineScene({ scene, className }: SplineSceneProps) {
-  return <Spline scene={scene} className={className} />;
+  function handleLoad(spline: Application) {
+    improveRobotVisibility(spline);
+  }
+
+  return <Spline scene={scene} className={className} onLoad={handleLoad} />;
 }
