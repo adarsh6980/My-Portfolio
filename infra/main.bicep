@@ -115,7 +115,6 @@ resource sqlDatabase 'Microsoft.Sql/servers/databases@2025-01-01' = {
     autoPauseDelay: 60
     freeLimitExhaustionBehavior: 'AutoPause'
     licenseType: 'LicenseIncluded'
-    minCapacity: 1
     maxSizeBytes: 34359738368
     requestedBackupStorageRedundancy: 'Local'
     useFreeLimit: true
