@@ -8,8 +8,8 @@ export function ExperienceTimeline() {
       <SectionHeading eyebrow="Experience" title="Where I've worked and studied" />
       <ol className="relative border-l border-white/10 pl-8">
         {PORTFOLIO_DATA.experience.map((item, i) => (
-          <Reveal key={item.role} delay={i * 0.1}>
-            <li className="mb-12 last:mb-0">
+          <li key={item.role} className="mb-12 last:mb-0">
+            <Reveal delay={i * 0.1}>
               <span className="absolute -left-[7px] mt-1.5 h-3 w-3 rounded-full bg-accent" />
               <p className="font-mono text-xs uppercase tracking-wider text-accent">{item.period}</p>
               <h3 className="mt-1 font-display text-lg font-bold text-ink">{item.role}</h3>
@@ -30,8 +30,8 @@ export function ExperienceTimeline() {
                   </span>
                 ))}
               </div>
-            </li>
-          </Reveal>
+            </Reveal>
+          </li>
         ))}
       </ol>
     </section>
