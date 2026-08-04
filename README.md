@@ -131,11 +131,13 @@ The hero's Spline 3D scene loads on every viewport, including phones — a delib
 
 ## Docker, Azure, and CI/CD
 
-**Known gap:** `frontend/Dockerfile`, `frontend/nginx.conf`, and the frontend half of `docker-compose.yml`/`deploy-azure.yml`/`infra/*` were written for the Angular build and were removed or left unmodified during the Next.js rebuild — `frontend/Dockerfile` no longer exists, so `docker compose up --build` and the Azure frontend deploy step will fail until a Next.js-appropriate Dockerfile (and any related Nginx/Bicep/workflow updates) is added. This was an explicit non-goal of the rebuild, not an oversight; treat it as open work before relying on Docker or the Azure workflow again.
+The Azure workflow builds a static Next.js export, verifies it, copies it into the ASP.NET Core package, and deploys the combined site to the existing App Service. The backend derives SHA-256 CSP hashes from the exported hydration scripts at startup, so the interactive Next.js UI works without enabling unrestricted inline scripts.
+
+**Known Docker gap:** `frontend/Dockerfile` and `frontend/nginx.conf` were removed during the Next.js rebuild, so the frontend service in `docker compose up --build` still needs a Next.js-appropriate container definition before that local workflow can be used again.
 
 `backend/Dockerfile` publishes the API and runs it as a non-root user on port `5050` and is unaffected. The root `.dockerignore` excludes local secrets, dependencies, builds, databases, and test output from build contexts.
 
-`infra/main.bicep` and `infra/parameters/*.example.json` define the Switzerland North App Service F1 and Azure SQL free-offer resources (backend-focused; unaffected by the frontend rebuild). `.github/workflows/ci.yml` and `.github/workflows/deploy-azure.yml` predate the Next.js rebuild and have not been re-verified against it. Required variables, secrets, RBAC, free-limit behavior, rollback, and teardown are in [DEPLOYMENT.md](DEPLOYMENT.md).
+`infra/main.bicep` and `infra/parameters/*.example.json` define the Switzerland North App Service F1 and Azure SQL free-offer resources. `.github/workflows/ci.yml` verifies the Next.js export and backend, while `.github/workflows/deploy-azure.yml` packages the static frontend with the API. Required variables, secrets, RBAC, free-limit behavior, rollback, and teardown are in [DEPLOYMENT.md](DEPLOYMENT.md).
 
 ## Troubleshooting
 

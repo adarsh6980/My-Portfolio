@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Portfolio.Application.Contacts;
 using Portfolio.Application.Projects;
 using Portfolio.Api.Configuration;
+using Portfolio.Api.Security;
 using Portfolio.Infrastructure;
 using Portfolio.Infrastructure.Persistence;
 
@@ -93,7 +94,12 @@ builder.Services.AddRateLimiter(options =>
 
 var app = builder.Build();
 const string apiContentSecurityPolicy = "default-src 'none'; frame-ancestors 'none'; base-uri 'none'";
-const string frontendContentSecurityPolicy = "default-src 'self'; script-src 'self' 'sha256-sRPuQG7yc65LKWht/vVFEbZtQkpYSC7fkYHVG09IU20='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https: http://localhost:5050; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'";
+var frontendIndexPath = Path.Combine(app.Environment.WebRootPath ?? "wwwroot", "index.html");
+var frontendIndexHtml = File.Exists(frontendIndexPath)
+    ? await File.ReadAllTextAsync(frontendIndexPath)
+    : null;
+var frontendScriptDirective = FrontendScriptPolicy.BuildDirective(frontendIndexHtml);
+var frontendContentSecurityPolicy = $"default-src 'self'; {frontendScriptDirective}; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https: http://localhost:5050; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'";
 
 if (trustForwardedHeaders) app.UseForwardedHeaders();
 app.UseExceptionHandler();

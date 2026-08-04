@@ -49,7 +49,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply overflow-x-clip bg-background text-foreground;
   }
 
   @media (prefers-reduced-motion: reduce) {

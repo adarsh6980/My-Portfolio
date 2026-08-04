@@ -38,7 +38,7 @@ public sealed class ApiIntegrationTests : IClassFixture<PortfolioApiFactory>
     }
 
     [Fact]
-    public async Task Frontend_csp_supports_Angular_styles_without_allowing_inline_scripts()
+    public async Task Frontend_csp_supports_component_styles_without_allowing_unsafe_inline_scripts()
     {
         var response = await _client.GetAsync("/");
 
