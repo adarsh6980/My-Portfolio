@@ -27,6 +27,18 @@ describe('App', () => {
     expect(compiled.querySelector('[href*="resume"]')).toBeTruthy();
   });
 
+  it('keeps the hero introduction and highlighted name as readable layout units', async () => {
+    const fixture = TestBed.createComponent(App);
+    await fixture.whenStable();
+    const compiled = fixture.nativeElement as HTMLElement;
+    const nameLine = compiled.querySelector('.hero-name-line');
+    const highlightedName = nameLine?.querySelector('.hero-name');
+
+    expect(nameLine).toBeTruthy();
+    expect(nameLine?.textContent?.replace(/\s+/g, ' ').trim()).toBe("I'm Adarsh Ramakrishna,");
+    expect(highlightedName?.textContent?.trim()).toBe('Adarsh Ramakrishna,');
+  });
+
   it('exposes all three engineering case studies without invented links', async () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();

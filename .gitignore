@@ -43,3 +43,4 @@ screenshots/
 tmp/
 output/
 dogfood-output/
+.superpowers/
