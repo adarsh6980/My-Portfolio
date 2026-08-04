@@ -49,6 +49,9 @@ const config: Config = {
         "navy-card": "var(--navy-card)",
         ink: "var(--ink)",
         "accent-hover": "var(--accent-hover)",
+        "accent-button": "var(--accent-button)",
+        "accent-button-hover": "var(--accent-button-hover)",
+        "accent-button-foreground": "var(--accent-button-foreground)",
       },
       borderRadius: {
         lg: "var(--radius)",

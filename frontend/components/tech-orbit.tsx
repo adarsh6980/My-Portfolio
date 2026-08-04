@@ -48,7 +48,7 @@ export function TechOrbit() {
           }
         `}</style>
 
-        <div className="pointer-events-none absolute bottom-0 left-1/2 aspect-square w-28 -translate-x-1/2 translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(91,127,255,0.55),transparent_70%)] blur-xl md:w-40" />
+        <div className="pointer-events-none absolute bottom-0 left-1/2 aspect-square w-28 -translate-x-1/2 translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(212,212,216,0.4),transparent_70%)] blur-xl md:w-40" />
 
         {orbits.map((orbit, index) => {
           const isCW = index % 2 === 0;

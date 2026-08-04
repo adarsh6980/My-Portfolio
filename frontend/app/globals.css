@@ -4,35 +4,39 @@
 
 @layer base {
   :root {
-    /* shadcn semantic tokens, mapped to the navy-glass brand */
-    --background: 229 42% 12%;
-    --foreground: 225 67% 98%;
-    --card: 228 39% 22%;
-    --card-foreground: 225 67% 98%;
-    --popover: 228 39% 22%;
-    --popover-foreground: 225 67% 98%;
-    --primary: 227 100% 68%;
-    --primary-foreground: 225 67% 98%;
-    --secondary: 227 41% 18%;
-    --secondary-foreground: 225 67% 98%;
-    --muted: 229 24% 63%;
-    --muted-foreground: 229 20% 70%;
-    --accent: 227 100% 68%;
-    --accent-foreground: 225 67% 98%;
-    --destructive: 0 84.2% 60.2%;
+    /* shadcn semantic tokens, mapped to the liquid-glass black/grey/white brand */
+    --background: 240 8% 5%;
+    --foreground: 240 5% 96%;
+    --card: 240 6% 13%;
+    --card-foreground: 240 5% 96%;
+    --popover: 240 6% 13%;
+    --popover-foreground: 240 5% 96%;
+    --primary: 240 5% 84%;
+    --primary-foreground: 240 8% 5%;
+    --secondary: 240 6% 10%;
+    --secondary-foreground: 240 5% 96%;
+    --muted: 240 5% 65%;
+    --muted-foreground: 240 5% 70%;
+    --accent: 240 5% 84%;
+    --accent-foreground: 240 8% 5%;
+    --destructive: 0 72% 60%;
     --destructive-foreground: 0 0% 98%;
-    --border: 229 30% 30%;
-    --input: 229 30% 30%;
-    --ring: 227 100% 68%;
+    --border: 240 5% 26%;
+    --input: 240 5% 26%;
+    --ring: 240 5% 84%;
     --radius: 1rem;
 
-    /* brand tokens carried over from the previous Angular app */
-    --navy: #12172c;
-    --navy-deep: #0f1428;
-    --navy-panel: #1b2340;
-    --navy-card: #232c4f;
-    --ink: #f5f7fd;
-    --accent-hover: #7896ff;
+    /* brand tokens: liquid-glass black/grey/white, matching the chrome hero robot */
+    --navy: #0b0b0d;
+    --navy-deep: #050506;
+    --navy-panel: #17171a;
+    --navy-card: #1f1f23;
+    --ink: #f4f4f5;
+    --accent-hover: #ffffff;
+    /* solid CTA buttons use dark text on the light accent for AA contrast (13.3:1) */
+    --accent-button: #d4d4d8;
+    --accent-button-hover: #ffffff;
+    --accent-button-foreground: #0b0b0d;
 
     color-scheme: dark;
   }
