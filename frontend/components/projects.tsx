@@ -3,6 +3,7 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { Reveal } from "@/components/ui/reveal";
 import { Card } from "@/components/ui/card";
 import { StaggerGroup, StaggerItem } from "@/components/ui/stagger";
+import { Spotlight } from "@/components/ui/spotlight";
 
 export function Projects() {
   return (
@@ -16,6 +17,7 @@ export function Projects() {
         {PORTFOLIO_DATA.projects.map((project, i) => (
           <Reveal key={project.slug} delay={i * 0.1}>
             <Card className="flex h-full flex-col border-white/10 bg-navy-card/60 p-6">
+              <Spotlight size={220} />
               <p className="mb-2 font-mono text-xs uppercase tracking-wider text-accent">{project.eyebrow}</p>
               <h3 className="mb-3 font-display text-lg font-bold text-ink">{project.title}</h3>
               <p className="mb-4 flex-1 text-sm text-muted">{project.solution}</p>
