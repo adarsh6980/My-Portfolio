@@ -25,7 +25,7 @@
 **Files:** `infra/main.bicep`, `infra/parameters/production.example.json`, `.github/workflows/deploy-azure.yml`, related deployment documentation
 
 1. Confirm the current Azure SQL free-offer ARM schema from Microsoft documentation.
-2. Change the production region to `northeurope` and the App Service plan to F1.
+2. Change App Service and SQL to `northeurope`, use the nearest supported Static Web Apps backend region (`westeurope`), and set the App Service plan to F1.
 3. Configure Azure SQL to use the free-offer exhaustion behavior that pauses usage instead of billing beyond the allowance.
 4. Add validation that prevents paid SKU fallbacks in the preview configuration.
 5. Keep Key Vault and custom-domain resources disabled.
@@ -63,4 +63,3 @@
 2. Monitor the workflow until it succeeds or produces an actionable failure.
 3. Verify the frontend URL, API health endpoint, and frontend-to-API access over HTTPS.
 4. Report the deployed URLs, Azure resource group, workflow run, free-tier safeguards, and any deferred items.
-

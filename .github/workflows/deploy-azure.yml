@@ -195,13 +195,6 @@ jobs:
           test -n "$PORTFOLIO_SQL_CONNECTION"
           test -n "$CONTACT_HASH_SALT_VALUE"
           test -n "$FRONTEND_ORIGIN_VALUE"
-          insights_connection="$(az resource show \
-            --name "${{ vars.AZURE_WEBAPP_NAME }}-insights" \
-            --resource-group "${{ vars.AZURE_RESOURCE_GROUP }}" \
-            --resource-type Microsoft.Insights/components \
-            --api-version 2020-02-02 \
-            --query properties.ConnectionString --output tsv)"
-          test -n "$insights_connection"
           mapfile -t stale_cors_settings < <(az webapp config appsettings list \
             --name "${{ vars.AZURE_WEBAPP_NAME }}" \
             --resource-group "${{ vars.AZURE_RESOURCE_GROUP }}" \
@@ -214,13 +207,17 @@ jobs:
               --setting-names "${stale_cors_settings[@]}" \
               --output none
           fi
+          az webapp config appsettings delete \
+            --name "${{ vars.AZURE_WEBAPP_NAME }}" \
+            --resource-group "${{ vars.AZURE_RESOURCE_GROUP }}" \
+            --setting-names "ApplicationInsights__ConnectionString" \
+            --output none
           az webapp config appsettings set \
             --name "${{ vars.AZURE_WEBAPP_NAME }}" \
             --resource-group "${{ vars.AZURE_RESOURCE_GROUP }}" \
             --settings \
               "ASPNETCORE_ENVIRONMENT=Production" \
               "WEBSITE_RUN_FROM_PACKAGE=1" \
-              "ApplicationInsights__ConnectionString=$insights_connection" \
               "Database__Provider=SqlServer" \
               "Database__ApplyMigrationsOnStartup=false" \
               "ConnectionStrings__Portfolio=$PORTFOLIO_SQL_CONNECTION" \

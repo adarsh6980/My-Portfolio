@@ -2,7 +2,8 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "location": { "value": "westeurope" },
+    "location": { "value": "northeurope" },
+    "staticWebAppLocation": { "value": "westeurope" },
     "staticWebAppName": { "value": "replace-with-globally-unique-portfolio-web" },
     "apiAppName": { "value": "replace-with-globally-unique-portfolio-api" },
     "sqlServerName": { "value": "replace-with-globally-unique-portfolio-sql" },
@@ -10,6 +11,7 @@
     "staticWebAppSku": { "value": "Free" },
     "deploySql": { "value": false },
     "deployKeyVault": { "value": false },
+    "deployMonitoring": { "value": false },
     "allowAzureServicesToSql": { "value": false },
     "logAnalyticsRetentionInDays": { "value": 30 },
     "tags": {

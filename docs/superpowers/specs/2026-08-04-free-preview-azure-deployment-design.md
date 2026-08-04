@@ -9,7 +9,8 @@ Publish the portfolio from `adarsh6980/My-Portfolio` as a production-like previe
 
 ## Approved constraints
 
-- Azure region: North Europe (`northeurope`, Ireland)
+- Regional compute/data: North Europe (`northeurope`, Ireland)
+- Static Web Apps backend region: West Europe (`westeurope`), the nearest supported European location; static content remains globally distributed
 - Frontend: Azure Static Web Apps Free
 - API: Azure App Service Free F1
 - Database: Azure SQL Database free offer only, with automatic pause when the monthly free allowance is exhausted
@@ -46,4 +47,3 @@ Globally unique resource names may receive a short deterministic suffix if Azure
 ## Verification
 
 The minimum verification is a clean secret scan, successful production builds, successful Bicep validation and `what-if`, a successful GitHub deployment workflow, and HTTP health checks for the public frontend and API. This is deployment validation, not a full test-suite run.
-

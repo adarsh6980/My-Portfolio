@@ -13,12 +13,12 @@ Manual GitHub Actions deployment (OIDC, production environment)
   ├─ build Angular artifact
   ├─ reconcile App Service outbound-IP SQL rules
   ├─ temporary runner SQL rule → EF bundle
-  ├─ full App Service settings → API deploy → readiness probe
+  ├─ free-preview App Service settings → API deploy → readiness probe
   └─ transiently fetch/mask SWA key → deploy Angular last
-Optional: Key Vault resource and managed identity role assignment
+Optional: consumption-billed monitoring, or Key Vault plus managed identity role assignment
 ```
 
-`infra/main.bicep` defines Azure Static Web Apps, Linux App Service plan/API, Log Analytics/Application Insights, optional Azure SQL, and optional Key Vault. It does not own App Service application settings; the deployment workflow reconciles the complete expected settings set. `infra/parameters/dev.example.json` and `infra/parameters/production.example.json` are examples only and contain no deployment credentials.
+`infra/main.bicep` defines Azure Static Web Apps, Linux App Service plan/API, optional Log Analytics/Application Insights, optional Azure SQL, and optional Key Vault. It does not own App Service application settings; the deployment workflow reconciles the complete expected settings set. `infra/parameters/dev.example.json` and `infra/parameters/production.example.json` are examples only and contain no deployment credentials.
 
 ## Required runtime configuration
 
@@ -34,14 +34,14 @@ Use platform application settings, managed identity/Key Vault references where w
 | `Cors__AllowedOrigins__0` | Browser access | `.env.example`; deployment workflow | Must equal the verified public frontend origin; never use a broad wildcard. |
 | `Contact__HashSalt` | Requester-hash salting | Consumed by API | Use `CONTACT_HASH_SALT` in GitHub/Compose; non-development requires a unique, varied value of at least 32 characters. |
 | `ReverseProxy__TrustForwardedHeaders` | Proxy-aware scheme/IP handling | `.env.example`; deployment workflow | Azure enables it; API trusts one hop only from RFC1918 private networks. |
-| `ApplicationInsights__ConnectionString` | Telemetry configuration | `.env.example`; deployment workflow | Workflow reads the provisioned component and writes the setting; API registers telemetry only when non-empty. |
+| `ApplicationInsights__ConnectionString` | Optional telemetry configuration | `.env.example` | The free preview leaves this empty; the API registers telemetry only when a reviewed monitoring deployment supplies it. |
 | `PORTFOLIO_API_URL` | Docker frontend build | `docker-compose.yml` / `frontend/Dockerfile` | Browser-reachable URL, defaulting to `http://localhost:5050`. |
 
 `.env.example` is not loaded automatically. The frontend loads public API configuration from `/assets/config.js` via `globalThis.__PORTFOLIO_CONFIG__`; the deployment workflow writes it from `FRONTEND_API_URL` and Docker writes it from `PORTFOLIO_API_URL`.
 
 ## GitHub Actions, OIDC, variables, and secrets
 
-The deployment workflow uses `azure/login@v2` with `id-token: write`; it does not use a long-lived Azure client secret. Configure an Azure Entra federated credential whose subject matches the approved repository and `production` environment. At the target resource-group scope, the OIDC principal needs permission to deploy resources, read App Service outbound addresses and Application Insights, manage SQL firewall rules, update/deploy App Service, and list the Static Web Apps API key. Resource-group `Contributor` covers the ordinary resource operations but does not grant role-assignment writes. Enable optional Key Vault provisioning only after separately granting `Microsoft.Authorization/roleAssignments/write` at the required scope (for example, an appropriate RBAC-administration role or a narrowly scoped custom role); that extra permission is unnecessary when `deployKeyVault=false`.
+The deployment workflow uses `azure/login@v2` with `id-token: write`; it does not use a long-lived Azure client secret. Configure an Azure Entra federated credential whose subject matches the approved repository and `production` environment. At the target resource-group scope, the OIDC principal needs permission to deploy resources, read App Service outbound addresses, manage SQL firewall rules, update/deploy App Service, and list the Static Web Apps API key. Resource-group `Contributor` covers the ordinary resource operations but does not grant role-assignment writes. Enable optional Key Vault provisioning only after separately granting `Microsoft.Authorization/roleAssignments/write` at the required scope (for example, an appropriate RBAC-administration role or a narrowly scoped custom role); that extra permission is unnecessary when `deployKeyVault=false`.
 
 Create these **production environment variables**:
 
@@ -84,7 +84,7 @@ Replace the hash-salt placeholder before executing the commands. Set `PORTFOLIO_
 
 ## Azure configuration and costs
 
-The Bicep defaults are Static Web Apps `Free`; App Service `B1` (with `F1` allowed for experimentation); optional Azure SQL serverless General Purpose at one minimum/maximum vCore, 60-minute auto-pause, and 32 GiB maximum size; and Log Analytics retention of 30 days. Key Vault and SQL are disabled in the development example. `allowAzureServicesToSql` defaults to `false`; the broad `AllowAzureServices` rule is created only when explicitly requested, while the normal deployment manages named outbound-IP rules. The default Key Vault name is independently bounded to Azure's length rules, and both SCM and FTP basic publishing credentials are disabled. App Service platform health uses the liveness-only `/api/health` path so probes do not continually wake auto-paused SQL; workflow deployment readiness uses `/health/ready`.
+The free-preview Bicep contract is Static Web Apps `Free` in its nearest supported European backend region (`westeurope`), App Service `F1` in North Europe (`northeurope`), and Azure SQL's free monthly offer with `AutoPause` exhaustion behavior, one minimum/maximum vCore, 60-minute inactivity auto-pause, local backup redundancy, and a 32 GiB maximum size. Static Web Apps content remains globally distributed. Key Vault and consumption-billed Log Analytics/Application Insights are disabled. The template contains no paid App Service or Static Web Apps SKU fallback. SQL is disabled in the development example. `allowAzureServicesToSql` defaults to `false`; the broad `AllowAzureServices` rule is created only when explicitly requested, while the normal deployment manages named outbound-IP rules. The default Key Vault name is independently bounded to Azure's length rules, and both SCM and FTP basic publishing credentials are disabled. App Service platform health uses the liveness-only `/api/health` path so probes do not continually wake auto-paused SQL; workflow deployment readiness uses `/health/ready`.
 
 Prices and availability are region- and subscription-dependent. Before provisioning, verify current pricing and availability, then create budgets/cost alerts, set telemetry ingestion/retention limits, apply owner/environment tags, and select an App Service tier appropriate to availability needs. Do not place a fabricated cost estimate in this repository.
 
@@ -112,7 +112,7 @@ Never enable automatic production schema mutation merely by changing the environ
 - [ ] `Contact__HashSalt` is unique, strong, and secret; Azure SQL credentials are not committed.
 - [ ] Azure resource names are unique and approved; pricing, region availability, budgets, and tags are reviewed.
 - [ ] A migration artifact, restore plan, and pre-deploy migration validation are complete.
-- [ ] `ApplicationInsights__ConnectionString` is configured, alerts are implemented/tested, and the database readiness check is observed in the target environment.
+- [ ] The database readiness check is observed in the target environment; optional Application Insights remains disabled until its consumption cost is separately approved.
 - [ ] App Service liveness uses `/api/health`; workflow `/health/ready` succeeds before the frontend deploys last; contact-form smoke testing succeeds.
 - [ ] Resume, screenshots, domain, contact details, links, dates, and metrics are verified or intentionally retain their bracketed placeholders.
 
@@ -120,6 +120,6 @@ Never enable automatic production schema mutation merely by changing the environ
 
 The workflow has no deployment-slot strategy, release-artifact retention policy, or rollback script. It builds a temporary migration bundle during deployment rather than retaining a release artifact. Before production, preserve the prior frontend/API artifact identifiers; roll back application traffic/artifacts before considering a database change; use forward-compatible migrations; and restore a database only from a tested backup after impact review.
 
-Current logging records operational events and contact-submission identifiers. The workflow writes the Application Insights connection string, which conditionally enables API telemetry; `/health/ready` includes the database-context check. Monitor liveness/readiness separately, request latency and errors, rate-limit rejections, persistent firewall-rule drift, migration failures, frontend contact failures, telemetry ingestion, and budget alerts. Redact names, emails, subjects, messages, raw IP addresses, connection strings, keys, tokens, and hash salts.
+Current application logging records operational events and contact-submission identifiers. The strict free-preview workflow removes any stale Application Insights connection string; `/health/ready` includes the database-context check. Monitor liveness/readiness separately, request latency and errors, rate-limit rejections, persistent firewall-rule drift, migration failures, frontend contact failures, and budget alerts. Redact names, emails, subjects, messages, raw IP addresses, connection strings, keys, tokens, and hash salts.
 
 No Azure resources have been created by this repository. For a future teardown, first disable federation/deployment access after approval, apply the approved personal-data retention/export process, verify required database backups, then delete only the resolved approved resource group/resources. Confirm removal of App Service, Static Web Apps, Azure SQL, Application Insights/Log Analytics, Key Vault, DNS/certificates, and billing/access assignments. Do not issue a broad subscription-level deletion command or guess resource names.

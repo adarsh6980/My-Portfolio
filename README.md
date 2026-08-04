@@ -18,7 +18,7 @@ Replace these comments with committed, non-sensitive screenshots after the UI is
 - API: ASP.NET Core 10, C# 14, minimal APIs, OpenAPI, rate limiting, and health endpoints.
 - Data: Entity Framework Core 10 with SQLite by default or SQL Server/Azure SQL when selected through configuration.
 - Delivery definitions: Docker/Compose, Azure Bicep, and GitHub Actions CI plus manual OIDC deployment workflow.
-- Intended Azure topology: Azure Static Web Apps, Azure App Service, optional Azure SQL, Application Insights/Log Analytics, and optional Key Vault. Parameter files contain placeholders; no resources have been provisioned from this repository.
+- Intended free-preview Azure topology: Static Web Apps Free, App Service F1, the Azure SQL free offer with monthly-limit auto-pause, and optional monitoring/Key Vault resources that remain disabled by default. Parameter files contain placeholders; no resources have been provisioned from this repository.
 
 See [ARCHITECTURE.md](ARCHITECTURE.md) for the component boundaries and request lifecycle, and [DEPLOYMENT.md](DEPLOYMENT.md) for the explicit delivery gaps and production checklist.
 
@@ -101,7 +101,7 @@ The API reads normal ASP.NET Core configuration keys, so double underscores map 
 | `ReverseProxy__TrustForwardedHeaders` | `false` | Enables forwarded host/protocol processing only for explicitly trusted RFC1918 private proxy networks, with one forwarded hop. |
 | `ASPNETCORE_ENVIRONMENT` | `Development` | Enables development behavior including OpenAPI. |
 | `ASPNETCORE_URLS` | `http://localhost:5050` | Explicit API binding for the frontend's present configuration. |
-| `ApplicationInsights__ConnectionString` | empty in `.env.example` | Owned by the deployment workflow for App Service; the API conditionally registers Application Insights when configured. |
+| `ApplicationInsights__ConnectionString` | empty in `.env.example` | Optional; the strict free preview keeps it empty, and the API conditionally registers Application Insights only when configured. |
 
 A provider-neutral initial migration is checked in under `backend/src/Portfolio.Infrastructure/Persistence/Migrations/`; its SQLite application and generated SQL Server DDL have both been verified locally. The API applies migrations in Development/Testing or when the explicit `Database__ApplyMigrationsOnStartup=true` local-container switch is set. Azure leaves that switch disabled and uses the deployment bundle through a temporary runner-IP firewall rule; see [DEPLOYMENT.md](DEPLOYMENT.md) for safeguards and rollback limits.
 
@@ -132,7 +132,7 @@ The three current case studies are AI-Assisted Code Documentation Platform, Full
 
 `frontend/Dockerfile` builds Angular and serves it through Nginx on port `8080`; `backend/Dockerfile` publishes the API and runs it as a non-root user on port `5050`. The root `.dockerignore` excludes local secrets, dependencies, builds, databases, and test output from build contexts. `docker-compose.yml` binds both ports, persists SQLite in the `portfolio-data` volume, opts into SQLite migration on startup, waits for `/health/ready`, accepts `PORTFOLIO_API_URL`, and requires a valid `CONTACT_HASH_SALT`.
 
-`infra/main.bicep` and `infra/parameters/*.example.json` define Azure Static Web Apps, a Linux App Service plan/API, Log Analytics/Application Insights, optional Azure SQL, and optional Key Vault. `.github/workflows/ci.yml` audits dependencies, lints/tests/builds, and verifies SQL Server migration generation. `.github/workflows/deploy-azure.yml` is a manual, `production`-gated OIDC deployment: it reconciles persistent SQL rules for App Service outbound IPs, creates/removes a temporary runner-IP rule for the provider-selected EF bundle, owns the complete App Service settings set, deploys and readiness-checks the API, then deploys the frontend last with a transiently fetched/masked Static Web Apps API key. Required variables, secrets, RBAC, costs, rollback, monitoring, and teardown are in [DEPLOYMENT.md](DEPLOYMENT.md).
+`infra/main.bicep` and `infra/parameters/*.example.json` define free Azure Static Web Apps and Linux App Service hosting, the Azure SQL free offer with automatic free-limit pause, plus opt-in monitoring and Key Vault resources. `.github/workflows/ci.yml` audits dependencies, lints/tests/builds, and verifies SQL Server migration generation. `.github/workflows/deploy-azure.yml` is a manual, `production`-gated OIDC deployment: it reconciles persistent SQL rules for App Service outbound IPs, creates/removes a temporary runner-IP rule for the provider-selected EF bundle, owns the complete App Service settings set, deploys and readiness-checks the API, then deploys the frontend last with a transiently fetched/masked Static Web Apps API key. Required variables, secrets, RBAC, costs, rollback, monitoring, and teardown are in [DEPLOYMENT.md](DEPLOYMENT.md).
 
 ## Troubleshooting
 
