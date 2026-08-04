@@ -1,7 +1,7 @@
 # Free Azure Preview Deployment Design
 
 **Date:** 2026-08-04
-**Status:** Approved verbally; written review pending
+**Status:** Approved by the repository owner
 
 ## Goal
 
