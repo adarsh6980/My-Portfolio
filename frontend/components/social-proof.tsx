@@ -6,7 +6,7 @@ export function SocialProof() {
   const { achievements, testimonials } = PORTFOLIO_DATA;
 
   return (
-    <section className="mx-auto max-w-6xl px-4 py-20 sm:px-8">
+    <section id="about" className="mx-auto max-w-6xl px-4 py-20 sm:px-8">
       <div className="grid gap-6 sm:grid-cols-4">
         {achievements.map((item, i) => (
           <Reveal key={item.label} delay={i * 0.08}>

@@ -58,7 +58,7 @@ export function Hero() {
 
           <div className="relative min-h-[520px] flex-1 overflow-hidden md:min-h-[620px] md:flex-[1.15]">
             <Parallax offset={40} className="h-full w-full">
-              <div className="flex h-full w-full scale-[1.9] items-end justify-center">
+              <div className="flex h-full w-full scale-[2.3] items-center justify-center">
                 <LazyMount fallback={<SplineFallback />}>
                   <SplineScene scene={SPLINE_SCENE_URL} className="h-full w-full" />
                 </LazyMount>

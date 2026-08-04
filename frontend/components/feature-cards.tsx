@@ -3,6 +3,7 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { Reveal } from "@/components/ui/reveal";
 import { Card } from "@/components/ui/card";
 import { StaggerGroup, StaggerItem } from "@/components/ui/stagger";
+import { Spotlight } from "@/components/ui/spotlight";
 
 const FEATURED_TITLES = ["Frontend engineering", "Backend engineering", "Cloud and DevOps"];
 
@@ -20,6 +21,7 @@ export function FeatureCards() {
         {cards.map((group, i) => (
           <Reveal key={group.title} delay={i * 0.1}>
             <Card className="h-full border-white/10 bg-navy-card/60 p-6 transition-transform hover:-translate-y-1">
+              <Spotlight size={220} />
               <p className="mb-2 font-mono text-xs uppercase tracking-wider text-accent">{group.confidence}</p>
               <h3 className="mb-4 font-display text-xl font-bold text-ink">{group.title}</h3>
               <StaggerGroup as="ul" className="flex flex-wrap gap-2">
