@@ -92,17 +92,41 @@ builder.Services.AddRateLimiter(options =>
 });
 
 var app = builder.Build();
+const string apiContentSecurityPolicy = "default-src 'none'; frame-ancestors 'none'; base-uri 'none'";
+const string frontendContentSecurityPolicy = "default-src 'self'; script-src 'self' 'sha256-sRPuQG7yc65LKWht/vVFEbZtQkpYSC7fkYHVG09IU20='; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https: http://localhost:5050; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'";
 
 if (trustForwardedHeaders) app.UseForwardedHeaders();
 app.UseExceptionHandler();
 app.UseResponseCompression();
 app.Use(async (context, next) =>
 {
+    var isApiResponse = context.Request.Path.StartsWithSegments("/api")
+        || context.Request.Path.StartsWithSegments("/health")
+        || context.Request.Path.StartsWithSegments("/openapi");
     context.Response.Headers["X-Content-Type-Options"] = "nosniff";
     context.Response.Headers["X-Frame-Options"] = "DENY";
     context.Response.Headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
-    context.Response.Headers["Content-Security-Policy"] = "default-src 'none'; frame-ancestors 'none'; base-uri 'none'";
+    context.Response.Headers["Content-Security-Policy"] = isApiResponse
+        ? apiContentSecurityPolicy
+        : frontendContentSecurityPolicy;
+    context.Response.Headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()";
     await next();
+});
+app.UseDefaultFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = staticFileContext =>
+    {
+        var path = staticFileContext.Context.Request.Path;
+        if (path.Equals("/assets/config.js"))
+        {
+            staticFileContext.Context.Response.Headers.CacheControl = "no-store, max-age=0";
+        }
+        else if (path.Equals("/index.html"))
+        {
+            staticFileContext.Context.Response.Headers.CacheControl = "no-cache";
+        }
+    }
 });
 app.UseCors("portfolio");
 if (!app.Environment.IsDevelopment() && !app.Environment.IsEnvironment("Testing"))
@@ -205,6 +229,11 @@ app.MapPost("/api/contact", async Task<IResult> (
     .RequireRateLimiting("contact")
     .WithName("SubmitContact")
     .WithTags("Contact");
+
+var unsupportedApiMethods = new[] { "GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS" };
+app.MapMethods("/api/{**path}", unsupportedApiMethods, () => Results.NotFound());
+app.MapMethods("/health/{**path}", unsupportedApiMethods, () => Results.NotFound());
+app.MapFallbackToFile("index.html");
 
 app.Run();
 

@@ -1,91 +1,39 @@
 targetScope = 'resourceGroup'
 
-@description('Azure region for all regional resources.')
-param location string = resourceGroup().location
+@description('The student subscription allows this deployment in Switzerland North.')
+@allowed([
+  'switzerlandnorth'
+])
+param location string = 'switzerlandnorth'
 
-@description('Static Web Apps supports a smaller set of backend regions. West Europe is the nearest supported region to Ireland; its static content is globally distributed.')
-param staticWebAppLocation string = 'westeurope'
-
-@description('Names must be globally unique where Azure requires it (Static Web App, App Service, and SQL server).')
-param staticWebAppName string
+@description('Globally unique names for the App Service application and Azure SQL logical server.')
 param apiAppName string
 param sqlServerName string
 
-@description('The preview is intentionally locked to the free App Service plan. A paid tier requires a reviewed template change.')
+@description('The preview is locked to App Service Free F1. A paid tier requires a reviewed template change.')
 @allowed([
   'F1'
 ])
 param appServicePlanSku string = 'F1'
 
-@allowed([
-  'Free'
-])
-param staticWebAppSku string = 'Free'
-
-@description('Provision Azure SQL. Leave false for the lowest-cost preview environment, which uses the API SQLite default until production settings are supplied.')
-param deploySql bool = false
-
-@description('Provision Key Vault. The API receives a system-assigned identity and Key Vault Secrets User when enabled.')
-param deployKeyVault bool = false
-
-@description('Provision consumption-billed Log Analytics and Application Insights. Disabled for the strict free preview.')
-param deployMonitoring bool = false
-
-@description('Allow connections from all Azure services to SQL. Keep false when deployment manages explicit App Service outbound IP rules.')
-param allowAzureServicesToSql bool = false
-
-@minLength(3)
-@maxLength(24)
-@description('Globally unique Key Vault name. The default is stable, valid, and independent of a potentially long App Service name.')
-param keyVaultName string = 'kv-${take(uniqueString(resourceGroup().id, apiAppName), 11)}-portfolio'
-
-@description('Azure SQL administrator login. Required only when deploySql is true.')
+@description('Azure SQL administrator login.')
 param sqlAdministratorLogin string = 'portfolioadmin'
 
 @secure()
-@description('Azure SQL administrator password. Supply only at deployment time when deploySql is true; do not put it in parameter files.')
-param sqlAdministratorPassword string = ''
+@description('Azure SQL administrator password. Supply only at deployment time; never place it in parameter files.')
+param sqlAdministratorPassword string
 
-@description('Database name for the contact-submission store.')
+@description('Database name for contact submissions.')
 param sqlDatabaseName string = 'portfolio'
-
-@minValue(1)
-@maxValue(4)
-@description('Maximum serverless vCores. Verify availability with az sql db list-editions for the selected region before deploying.')
-param sqlMaxVcores int = 1
-
-@minValue(60)
-@description('Minutes before a serverless Azure SQL database pauses. Set -1 only when an always-on database is required.')
-param sqlAutoPauseDelay int = 60
-
-@minValue(30)
-@maxValue(730)
-@description('Log Analytics retention period. 30 days avoids unnecessary retention cost.')
-param logAnalyticsRetentionInDays int = 30
 
 @description('Tags applied to every resource.')
 param tags object = {
   application: 'portfolio'
+  environment: 'preview'
   managedBy: 'bicep'
 }
 
 var appServicePlanName = '${apiAppName}-plan'
-var logAnalyticsName = '${apiAppName}-logs'
-var appInsightsName = '${apiAppName}-insights'
-
-resource staticWebApp 'Microsoft.Web/staticSites@2023-12-01' = {
-  name: staticWebAppName
-  location: staticWebAppLocation
-  sku: {
-    name: staticWebAppSku
-    tier: staticWebAppSku
-  }
-  properties: {
-    allowConfigFileUpdates: true
-    stagingEnvironmentPolicy: 'Enabled'
-  }
-  tags: tags
-}
 
 resource apiPlan 'Microsoft.Web/serverfarms@2023-12-01' = {
   name: appServicePlanName
@@ -98,35 +46,6 @@ resource apiPlan 'Microsoft.Web/serverfarms@2023-12-01' = {
   }
   properties: {
     reserved: true
-  }
-  tags: tags
-}
-
-resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2023-09-01' = if (deployMonitoring) {
-  name: logAnalyticsName
-  location: location
-  properties: {
-    sku: {
-      name: 'PerGB2018'
-    }
-    retentionInDays: logAnalyticsRetentionInDays
-  }
-  tags: tags
-}
-
-resource appInsights 'Microsoft.Insights/components@2020-02-02' = if (deployMonitoring) {
-  name: appInsightsName
-  location: location
-  kind: 'web'
-  properties: {
-    Application_Type: 'web'
-    WorkspaceResourceId: logAnalytics!.id
-    IngestionMode: 'LogAnalytics'
-    Request_Source: 'rest'
-    RetentionInDays: logAnalyticsRetentionInDays
-    DisableIpMasking: false
-    publicNetworkAccessForIngestion: 'Enabled'
-    publicNetworkAccessForQuery: 'Enabled'
   }
   tags: tags
 }
@@ -169,7 +88,7 @@ resource ftpBasicAuthPolicy 'Microsoft.Web/sites/basicPublishingCredentialsPolic
   }
 }
 
-resource sqlServer 'Microsoft.Sql/servers@2023-08-01' = if (deploySql) {
+resource sqlServer 'Microsoft.Sql/servers@2023-08-01' = {
   name: sqlServerName
   location: location
   properties: {
@@ -182,16 +101,7 @@ resource sqlServer 'Microsoft.Sql/servers@2023-08-01' = if (deploySql) {
   tags: tags
 }
 
-resource allowAzureServices 'Microsoft.Sql/servers/firewallRules@2023-08-01' = if (deploySql && allowAzureServicesToSql) {
-  parent: sqlServer
-  name: 'AllowAzureServices'
-  properties: {
-    startIpAddress: '0.0.0.0'
-    endIpAddress: '0.0.0.0'
-  }
-}
-
-resource sqlDatabase 'Microsoft.Sql/servers/databases@2025-01-01' = if (deploySql) {
+resource sqlDatabase 'Microsoft.Sql/servers/databases@2025-01-01' = {
   parent: sqlServer
   name: sqlDatabaseName
   location: location
@@ -199,10 +109,10 @@ resource sqlDatabase 'Microsoft.Sql/servers/databases@2025-01-01' = if (deploySq
     name: 'GP_S_Gen5'
     tier: 'GeneralPurpose'
     family: 'Gen5'
-    capacity: sqlMaxVcores
+    capacity: 1
   }
   properties: {
-    autoPauseDelay: sqlAutoPauseDelay
+    autoPauseDelay: 60
     freeLimitExhaustionBehavior: 'AutoPause'
     licenseType: 'LicenseIncluded'
     minCapacity: 1
@@ -214,35 +124,5 @@ resource sqlDatabase 'Microsoft.Sql/servers/databases@2025-01-01' = if (deploySq
   tags: tags
 }
 
-resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' = if (deployKeyVault) {
-  name: keyVaultName
-  location: location
-  properties: {
-    tenantId: subscription().tenantId
-    sku: {
-      family: 'A'
-      name: 'standard'
-    }
-    enableRbacAuthorization: true
-    enablePurgeProtection: false
-    softDeleteRetentionInDays: 7
-    publicNetworkAccess: 'Enabled'
-  }
-  tags: tags
-}
-
-resource keyVaultSecretsUser 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (deployKeyVault) {
-  name: guid(keyVault.id, apiApp.id, 'Key Vault Secrets User')
-  scope: keyVault
-  properties: {
-    principalId: apiApp.identity.principalId
-    principalType: 'ServicePrincipal'
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4633458b-17de-408a-b874-0445c86b69e6')
-  }
-}
-
-output staticWebAppHostname string = staticWebApp.properties.defaultHostname
 output apiHostname string = apiApp.properties.defaultHostName
-output applicationInsightsConnectionString string = deployMonitoring ? appInsights!.properties.ConnectionString : ''
-output sqlServerFqdn string = deploySql ? sqlServer!.properties.fullyQualifiedDomainName : ''
-output keyVaultUri string = deployKeyVault ? keyVault!.properties.vaultUri : ''
+output sqlServerFqdn string = sqlServer.properties.fullyQualifiedDomainName

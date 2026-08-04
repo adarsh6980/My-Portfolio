@@ -18,7 +18,7 @@ Replace these comments with committed, non-sensitive screenshots after the UI is
 - API: ASP.NET Core 10, C# 14, minimal APIs, OpenAPI, rate limiting, and health endpoints.
 - Data: Entity Framework Core 10 with SQLite by default or SQL Server/Azure SQL when selected through configuration.
 - Delivery definitions: Docker/Compose, Azure Bicep, and GitHub Actions CI plus manual OIDC deployment workflow.
-- Intended free-preview Azure topology: Static Web Apps Free, App Service F1, the Azure SQL free offer with monthly-limit auto-pause, and optional monitoring/Key Vault resources that remain disabled by default. Parameter files contain placeholders; no resources have been provisioned from this repository.
+- Free-preview Azure topology: one App Service F1 in Switzerland North serves Angular and the .NET API, backed by Azure SQL's free offer with monthly-limit auto-pause. Paid monitoring, Key Vault, custom domains, and paid SKU fallbacks are absent.
 
 See [ARCHITECTURE.md](ARCHITECTURE.md) for the component boundaries and request lifecycle, and [DEPLOYMENT.md](DEPLOYMENT.md) for the explicit delivery gaps and production checklist.
 
@@ -132,7 +132,7 @@ The three current case studies are AI-Assisted Code Documentation Platform, Full
 
 `frontend/Dockerfile` builds Angular and serves it through Nginx on port `8080`; `backend/Dockerfile` publishes the API and runs it as a non-root user on port `5050`. The root `.dockerignore` excludes local secrets, dependencies, builds, databases, and test output from build contexts. `docker-compose.yml` binds both ports, persists SQLite in the `portfolio-data` volume, opts into SQLite migration on startup, waits for `/health/ready`, accepts `PORTFOLIO_API_URL`, and requires a valid `CONTACT_HASH_SALT`.
 
-`infra/main.bicep` and `infra/parameters/*.example.json` define free Azure Static Web Apps and Linux App Service hosting, the Azure SQL free offer with automatic free-limit pause, plus opt-in monitoring and Key Vault resources. `.github/workflows/ci.yml` audits dependencies, lints/tests/builds, and verifies SQL Server migration generation. `.github/workflows/deploy-azure.yml` is a manual, `production`-gated OIDC deployment: it reconciles persistent SQL rules for App Service outbound IPs, creates/removes a temporary runner-IP rule for the provider-selected EF bundle, owns the complete App Service settings set, deploys and readiness-checks the API, then deploys the frontend last with a transiently fetched/masked Static Web Apps API key. Required variables, secrets, RBAC, costs, rollback, monitoring, and teardown are in [DEPLOYMENT.md](DEPLOYMENT.md).
+`infra/main.bicep` and `infra/parameters/*.example.json` define the Switzerland North App Service F1 and Azure SQL free-offer resources. `.github/workflows/ci.yml` audits dependencies, lints/tests/builds, and verifies SQL Server migration generation. `.github/workflows/deploy-azure.yml` is a manual, `production`-gated OIDC deployment: it builds Angular for same-origin API access, embeds it in the .NET publish output, reconciles narrow SQL firewall rules, applies the EF bundle, deploys one package, and verifies the public site and API. Required variables, secrets, RBAC, free-limit behavior, rollback, and teardown are in [DEPLOYMENT.md](DEPLOYMENT.md).
 
 ## Troubleshooting
 
