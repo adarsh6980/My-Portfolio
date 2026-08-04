@@ -1,6 +1,6 @@
 # Full-Stack Developer Portfolio
 
-An Angular single-page portfolio with a small ASP.NET Core API for project data and contact submissions. It is designed to present Angular, .NET, Entity Framework Core, SQLite/Azure SQL, and Azure delivery practices without turning unknown personal facts into claims.
+A Next.js portfolio landing page with a small ASP.NET Core API for project data and contact submissions. It is designed to present full-stack, .NET, Entity Framework Core, SQLite/Azure SQL, and Azure delivery practices without turning unknown personal facts into claims.
 
 The repository includes Docker, Bicep, and GitHub Actions delivery definitions, but no Azure resources are provisioned by default and Docker/Azure were not run from this local environment. The placeholder resume PDF is present and visually verified; portfolio screenshots remain intentionally uncommitted.
 
@@ -14,17 +14,17 @@ Replace these comments with committed, non-sensitive screenshots after the UI is
 
 ## Stack
 
-- Frontend: Angular 22, TypeScript 6, SCSS, and Vitest.
+- Frontend: Next.js 14 (App Router), TypeScript, Tailwind CSS, shadcn/ui, and Framer Motion.
 - API: ASP.NET Core 10, C# 14, minimal APIs, OpenAPI, rate limiting, and health endpoints.
 - Data: Entity Framework Core 10 with SQLite by default or SQL Server/Azure SQL when selected through configuration.
 - Delivery definitions: Docker/Compose, Azure Bicep, and GitHub Actions CI plus manual OIDC deployment workflow.
-- Free-preview Azure topology: one App Service F1 in Switzerland North serves Angular and the .NET API, backed by Azure SQL's free offer with monthly-limit auto-pause. Paid monitoring, Key Vault, custom domains, and paid SKU fallbacks are absent.
+- Free-preview Azure topology: one App Service F1 in Switzerland North serves the frontend and the .NET API, backed by Azure SQL's free offer with monthly-limit auto-pause. Paid monitoring, Key Vault, custom domains, and paid SKU fallbacks are absent. (This topology predates the Next.js rebuild and has not been re-verified against it — see [DEPLOYMENT.md](DEPLOYMENT.md).)
 
 See [ARCHITECTURE.md](ARCHITECTURE.md) for the component boundaries and request lifecycle, and [DEPLOYMENT.md](DEPLOYMENT.md) for the explicit delivery gaps and production checklist.
 
 ## Prerequisites
 
-- Node.js compatible with the checked-in Angular dependencies; `frontend/package.json` declares npm `11.9.0`.
+- Node.js compatible with Next.js 14 (Node 18.17+).
 - .NET SDK 10, because every backend project targets `net10.0`.
 - SQLite is used through the bundled EF Core provider for local development; a separately installed SQLite CLI is not required.
 - Docker and the Azure CLI are needed for the checked-in container and Azure delivery commands; neither has been used to deploy from this local environment.
@@ -35,7 +35,7 @@ Install frontend dependencies:
 
 ```bash
 cd frontend
-npm ci
+npm install
 ```
 
 Restore the backend from the repository root:
@@ -51,21 +51,21 @@ ASPNETCORE_ENVIRONMENT=Development \
 ASPNETCORE_URLS=http://localhost:5050 \
 Database__Provider=Sqlite \
 ConnectionStrings__Portfolio='Data Source=portfolio.db' \
-Cors__AllowedOrigins__0=http://localhost:4200 \
+Cors__AllowedOrigins__0=http://localhost:3000 \
 Contact__HashSalt='[ADD LOCAL NON-PRODUCTION HASH SALT]' \
 dotnet run --no-launch-profile --project backend/src/Portfolio.Api/Portfolio.Api.csproj
 ```
 
-In a second terminal, start Angular:
+In a second terminal, start Next.js:
 
 ```bash
 cd frontend
-npm start
+npm run dev
 ```
 
-The development server is served at `http://localhost:4200/`; the API health endpoint is `http://localhost:5050/api/health` when started with the command above.
+The development server is served at `http://localhost:3000/`; the API health endpoint is `http://localhost:5050/api/health` when started with the command above.
 
-`.env.example` is a configuration contract only; neither Angular nor ASP.NET Core automatically reads it. The frontend reads the public `/assets/config.js` runtime asset through `APP_CONFIG`, then falls back to `http://localhost:5050`. Export backend values in your shell, use user secrets, or add a deliberate loader before relying on a `.env` file.
+`.env.example` is a configuration contract only; ASP.NET Core does not automatically read it. Export backend values in your shell, use user secrets, or add a deliberate loader before relying on a `.env` file.
 
 ## Commands
 
@@ -73,10 +73,9 @@ Run these from the repository root unless the command changes into `frontend`:
 
 | Purpose | Command |
 | --- | --- |
-| Install frontend dependencies | `cd frontend && npm ci` |
-| Serve frontend | `cd frontend && npm start` |
+| Install frontend dependencies | `cd frontend && npm install` |
+| Serve frontend | `cd frontend && npm run dev` |
 | Production frontend build | `cd frontend && npm run build` |
-| Frontend tests | `cd frontend && npm test -- --watch=false` |
 | Frontend lint | `cd frontend && npm run lint` |
 | Restore backend | `dotnet restore backend/Portfolio.slnx` |
 | Build backend | `dotnet build backend/Portfolio.slnx` |
@@ -85,7 +84,7 @@ Run these from the repository root unless the command changes into `frontend`:
 | Validate Compose file | `CONTACT_HASH_SALT="$(openssl rand -hex 32)" docker compose config` |
 | Run local containers | `CONTACT_HASH_SALT="$(openssl rand -hex 32)" docker compose up --build` |
 
-There is no end-to-end-test script. CI runs frontend lint, tests, and production build plus backend restore/build/test; Docker, Azure CLI, and a .NET 10 SDK are required to run the delivery commands locally.
+There is no frontend or end-to-end test suite yet. CI's frontend job predates the Next.js rebuild and has not been re-verified against it (see `.github/workflows/ci.yml`); Docker, Azure CLI, and a .NET 10 SDK are required to run the delivery commands locally.
 
 ## Database and API configuration
 
@@ -96,7 +95,7 @@ The API reads normal ASP.NET Core configuration keys, so double underscores map 
 | `Database__Provider` | `Sqlite` | Selects SQLite; `SqlServer` selects the SQL Server provider. |
 | `Database__ApplyMigrationsOnStartup` | `false` | Explicit local/container opt-in; Compose sets it to `true`, while Azure production leaves it disabled. |
 | `ConnectionStrings__Portfolio` | `Data Source=portfolio.db` | Database connection string. |
-| `Cors__AllowedOrigins__0` | `http://localhost:4200` | First allowed browser origin; add indexed values for more origins. |
+| `Cors__AllowedOrigins__0` | `http://localhost:3000` | First allowed browser origin; add indexed values for more origins. |
 | `Contact__HashSalt` | `[ADD LOCAL NON-PRODUCTION HASH SALT]` | Salts the IP-derived requester hash. Non-development startup fails unless it is a non-placeholder secret of at least 32 characters with sufficient character variety. |
 | `ReverseProxy__TrustForwardedHeaders` | `false` | Enables forwarded host/protocol processing only for explicitly trusted RFC1918 private proxy networks, with one forwarded hop. |
 | `ASPNETCORE_ENVIRONMENT` | `Development` | Enables development behavior including OpenAPI. |
@@ -117,35 +116,34 @@ The implemented endpoints are:
 
 ## Content, resume, and projects
 
-Editable portfolio content lives in [frontend/src/app/data/portfolio-data.ts](frontend/src/app/data/portfolio-data.ts). Update it as one coherent change:
+Editable portfolio content lives in [frontend/lib/data.ts](frontend/lib/data.ts) (types in [frontend/lib/types.ts](frontend/lib/types.ts)). Update it as one coherent change:
 
-1. Replace only the existing bracketed placeholders such as `[ADD PROFESSIONAL EMAIL]`, `[ADD GITHUB URL]`, `[ADD LINKEDIN URL]`, `[ADD MEASURABLE RESULT]`, `[ADD PROJECT SCREENSHOT]`, and the employment/date placeholders with verified information. For social links, replace the URL and set its `placeholder` flag to `false` to render an interactive link.
-2. Keep project `slug` values aligned with the backend catalogue in `backend/src/Portfolio.Application/Projects/ProjectCatalog.cs`; cards link to the lazy `/projects/:slug` case-study route.
-3. Keep links and images as bracketed placeholders until they are known. Project cards render verified screenshot paths as lazy images and verified GitHub/live URLs as external links; do not invent those assets or URLs.
-4. Replace `profile.resumePath` and the visually verified placeholder PDF at `frontend/public/assets/Adarsh-Ramakrishna-Resume-placeholder.pdf` with the approved public resume asset.
-5. Update the canonical and social metadata placeholders in `frontend/src/index.html` at the same time as the public-domain and social-link content. If the inline JSON-LD changes, regenerate the exact SHA-256 script hash used by both frontend CSP configurations.
-6. Set the deployed API URL through `frontend/public/assets/config.js` (or the Docker `PORTFOLIO_API_URL` build argument). The Angular app reads `globalThis.__PORTFOLIO_CONFIG__.apiUrl` and falls back to `http://localhost:5050`.
+1. Replace only the existing bracketed placeholders such as `[ADD MEASURABLE RESULT]`, `[ADD GITHUB URL]`, `[ADD LIVE DEMO URL]`, `[ADD PROJECT SCREENSHOT]`, and the testimonial placeholders with verified information. For social links, the `placeholder` flag is informational only; both current links (GitHub, LinkedIn) are already real.
+2. Keep links as bracketed placeholders until they are known — project cards render the raw `[ADD ...]` text instead of a broken link until you fill them in; do not invent those URLs.
+3. Replace `profile.resumePath` and the placeholder PDF at `frontend/public/assets/Adarsh-Ramakrishna-Resume-placeholder.pdf` with the approved public resume asset.
+4. Update the page `<title>`/description in `frontend/app/layout.tsx`'s `metadata` export alongside any public-domain or social-link content changes.
 
-The three current case studies are AI-Assisted Code Documentation Platform, Full-Stack Job Application Tracker, and Cloud-Based Project Management Application. Their result, image, repository, and live-demo fields intentionally remain placeholders.
+The three current case studies are AI-Assisted Code Documentation Platform, Full-Stack Job Application Tracker, and Cloud-Based Project Management Application. Their result, screenshot, repository, and live-demo fields intentionally remain placeholders. There is no contact form or project-detail route in the Next.js rebuild yet — the API's `/api/contact` and per-project endpoints exist but are not currently called from the frontend.
 
 ## Docker, Azure, and CI/CD
 
-`frontend/Dockerfile` builds Angular and serves it through Nginx on port `8080`; `backend/Dockerfile` publishes the API and runs it as a non-root user on port `5050`. The root `.dockerignore` excludes local secrets, dependencies, builds, databases, and test output from build contexts. `docker-compose.yml` binds both ports, persists SQLite in the `portfolio-data` volume, opts into SQLite migration on startup, waits for `/health/ready`, accepts `PORTFOLIO_API_URL`, and requires a valid `CONTACT_HASH_SALT`.
+**Known gap:** `frontend/Dockerfile`, `frontend/nginx.conf`, and the frontend half of `docker-compose.yml`/`deploy-azure.yml`/`infra/*` were written for the Angular build and were removed or left unmodified during the Next.js rebuild — `frontend/Dockerfile` no longer exists, so `docker compose up --build` and the Azure frontend deploy step will fail until a Next.js-appropriate Dockerfile (and any related Nginx/Bicep/workflow updates) is added. This was an explicit non-goal of the rebuild, not an oversight; treat it as open work before relying on Docker or the Azure workflow again.
 
-`infra/main.bicep` and `infra/parameters/*.example.json` define the Switzerland North App Service F1 and Azure SQL free-offer resources. `.github/workflows/ci.yml` audits dependencies, lints/tests/builds, and verifies SQL Server migration generation. `.github/workflows/deploy-azure.yml` is a manual, `production`-gated OIDC deployment: it builds Angular for same-origin API access, embeds it in the .NET publish output, reconciles narrow SQL firewall rules, applies the EF bundle, deploys one package, and verifies the public site and API. Required variables, secrets, RBAC, free-limit behavior, rollback, and teardown are in [DEPLOYMENT.md](DEPLOYMENT.md).
+`backend/Dockerfile` publishes the API and runs it as a non-root user on port `5050` and is unaffected. The root `.dockerignore` excludes local secrets, dependencies, builds, databases, and test output from build contexts.
+
+`infra/main.bicep` and `infra/parameters/*.example.json` define the Switzerland North App Service F1 and Azure SQL free-offer resources (backend-focused; unaffected by the frontend rebuild). `.github/workflows/ci.yml` and `.github/workflows/deploy-azure.yml` predate the Next.js rebuild and have not been re-verified against it. Required variables, secrets, RBAC, free-limit behavior, rollback, and teardown are in [DEPLOYMENT.md](DEPLOYMENT.md).
 
 ## Troubleshooting
 
 | Symptom | Check |
 | --- | --- |
 | `NETSDK1045` or a target-framework error | Install/select a .NET 10 SDK; .NET 8 cannot build `net10.0` projects. |
-| Angular form cannot reach the API | Start the API with `ASPNETCORE_URLS=http://localhost:5050` and `--no-launch-profile`, or deliberately change `APP_CONFIG.apiUrl`. |
-| Browser CORS failure | Ensure the frontend origin exactly matches an indexed `Cors__AllowedOrigins__*` value. |
+| Browser CORS failure | Ensure the frontend origin (`http://localhost:3000`) exactly matches an indexed `Cors__AllowedOrigins__*` value if you wire up a frontend API call. |
 | Database opens in an unexpected location | Set an explicit `ConnectionStrings__Portfolio` path; relative SQLite paths resolve from the API process working directory. |
 | Telemetry is absent | Set `ApplicationInsights__ConnectionString`; the API only registers telemetry when this value is non-empty. |
 | Resume download shows placeholder content | Replace the checked-in placeholder PDF and retain the `profile.resumePath` contract. |
-| Container API is unreachable from the browser | Set `PORTFOLIO_API_URL` to the browser-reachable API URL before building the frontend image; a browser cannot resolve the Compose service name. |
-| Azure deployment fails before upload | Check the `production` GitHub environment, required OIDC secrets/variables, and placeholder-free Bicep parameter values described in `DEPLOYMENT.md`. |
+| `docker compose up --build` fails on the frontend service | Expected — see the Docker/Azure known gap above; `frontend/Dockerfile` needs to be rewritten for Next.js. |
+| Azure deployment fails before upload | Check the `production` GitHub environment, required OIDC secrets/variables, and placeholder-free Bicep parameter values described in `DEPLOYMENT.md`; also see the known gap above. |
 | API exits immediately in Production | Supply a valid `Contact__HashSalt`; placeholder, low-variety, or shorter-than-32-character values fail fast. |
 | Metadata changes are blocked by frontend CSP | Recompute the inline JSON-LD SHA-256 and update both `frontend/nginx.conf` and `frontend/public/staticwebapp.config.json`. |
 
