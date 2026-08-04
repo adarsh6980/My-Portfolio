@@ -86,4 +86,3 @@ Globally unique resource names may receive a short deterministic suffix if Azure
 ## Verification
 
 The minimum verification is a clean secret scan, successful Angular and .NET production builds, successful Bicep validation and `what-if`, a successful GitHub deployment workflow, and HTTP checks for the public site, API liveness, and database readiness. This is deployment validation, not a full test-suite run.
-
