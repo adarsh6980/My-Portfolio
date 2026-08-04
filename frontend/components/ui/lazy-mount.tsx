@@ -16,9 +16,8 @@ export function LazyMount({
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const isNarrowViewport = window.matchMedia("(max-width: 767px)").matches;
 
-    if (prefersReducedMotion || isNarrowViewport) {
+    if (prefersReducedMotion) {
       return; // stay on fallback
     }
 
