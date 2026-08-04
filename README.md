@@ -125,6 +125,10 @@ Editable portfolio content lives in [frontend/lib/data.ts](frontend/lib/data.ts)
 
 The three current case studies are AI-Assisted Code Documentation Platform, Full-Stack Job Application Tracker, and Cloud-Based Project Management Application. Their result, screenshot, repository, and live-demo fields intentionally remain placeholders. There is no contact form or project-detail route in the Next.js rebuild yet — the API's `/api/contact` and per-project endpoints exist but are not currently called from the frontend.
 
+## Performance note: hero robot on mobile
+
+The hero's Spline 3D scene loads on every viewport, including phones — a deliberate choice, not an oversight. Lighthouse's throttled mobile preset scores this page's performance at **48** with the robot enabled everywhere (desktop preset: 86; both were 97 when phones instead got a lightweight CSS gradient fallback). Accessibility, best practices, and SEO stay at 100 regardless. If mobile performance needs to come back up later, the fix is re-adding a viewport check in `frontend/components/ui/lazy-mount.tsx` (removed on purpose) so narrow viewports fall back to the static gradient instead of loading the full WebGL scene.
+
 ## Docker, Azure, and CI/CD
 
 **Known gap:** `frontend/Dockerfile`, `frontend/nginx.conf`, and the frontend half of `docker-compose.yml`/`deploy-azure.yml`/`infra/*` were written for the Angular build and were removed or left unmodified during the Next.js rebuild — `frontend/Dockerfile` no longer exists, so `docker compose up --build` and the Azure frontend deploy step will fail until a Next.js-appropriate Dockerfile (and any related Nginx/Bicep/workflow updates) is added. This was an explicit non-goal of the rebuild, not an oversight; treat it as open work before relying on Docker or the Azure workflow again.
