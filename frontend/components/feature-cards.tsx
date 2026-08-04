@@ -2,6 +2,7 @@ import { PORTFOLIO_DATA } from "@/lib/data";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Reveal } from "@/components/ui/reveal";
 import { Card } from "@/components/ui/card";
+import { StaggerGroup, StaggerItem } from "@/components/ui/stagger";
 
 const FEATURED_TITLES = ["Frontend engineering", "Backend engineering", "Cloud and DevOps"];
 
@@ -21,16 +22,17 @@ export function FeatureCards() {
             <Card className="h-full border-white/10 bg-navy-card/60 p-6 transition-transform hover:-translate-y-1">
               <p className="mb-2 font-mono text-xs uppercase tracking-wider text-accent">{group.confidence}</p>
               <h3 className="mb-4 font-display text-xl font-bold text-ink">{group.title}</h3>
-              <ul className="flex flex-wrap gap-2">
+              <StaggerGroup as="ul" className="flex flex-wrap gap-2">
                 {group.skills.map((skill) => (
-                  <li
+                  <StaggerItem
+                    as="li"
                     key={skill}
                     className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-muted"
                   >
                     {skill}
-                  </li>
+                  </StaggerItem>
                 ))}
-              </ul>
+              </StaggerGroup>
             </Card>
           </Reveal>
         ))}

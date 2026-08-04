@@ -1,6 +1,7 @@
 import { PORTFOLIO_DATA } from "@/lib/data";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Reveal } from "@/components/ui/reveal";
+import { StaggerGroup, StaggerItem } from "@/components/ui/stagger";
 
 export function ExperienceTimeline() {
   return (
@@ -20,16 +21,16 @@ export function ExperienceTimeline() {
                   <li key={highlight}>{highlight}</li>
                 ))}
               </ul>
-              <div className="mt-3 flex flex-wrap gap-2">
+              <StaggerGroup className="mt-3 flex flex-wrap gap-2">
                 {item.technologies.map((tech) => (
-                  <span
+                  <StaggerItem
                     key={tech}
                     className="rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-xs text-muted"
                   >
                     {tech}
-                  </span>
+                  </StaggerItem>
                 ))}
-              </div>
+              </StaggerGroup>
             </Reveal>
           </li>
         ))}

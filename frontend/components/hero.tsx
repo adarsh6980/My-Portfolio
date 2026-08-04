@@ -20,10 +20,10 @@ export function Hero() {
   const { profile } = PORTFOLIO_DATA;
 
   return (
-    <section id="home" className="px-4 pt-16 sm:px-8 sm:pt-24">
-      <Card className="mx-auto max-w-6xl overflow-hidden border-white/10 bg-navy-panel/60">
+    <section id="home" className="flex min-h-[calc(100dvh-4.75rem)] items-center px-4 py-8 sm:px-8">
+      <Card className="mx-auto w-full max-w-6xl overflow-hidden border-white/10 bg-navy-panel/60">
         <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" size={300} />
-        <div className="flex flex-col md:min-h-[600px] md:flex-row">
+        <div className="flex flex-col md:min-h-[620px] md:flex-row">
           <div className="relative z-10 flex flex-1 flex-col justify-center gap-6 p-8 sm:p-12">
             <Reveal>
               <p className="font-mono text-xs font-semibold uppercase tracking-wider text-accent">
@@ -31,7 +31,7 @@ export function Hero() {
               </p>
             </Reveal>
             <Reveal delay={0.1}>
-              <h1 className="font-display text-4xl font-extrabold leading-tight text-ink sm:text-5xl">
+              <h1 className="font-display text-4xl font-bold leading-tight text-ink sm:text-5xl">
                 {profile.heroTitle}
               </h1>
             </Reveal>
@@ -56,8 +56,8 @@ export function Hero() {
             </Reveal>
           </div>
 
-          <div className="relative min-h-[420px] flex-1 overflow-hidden md:min-h-0 md:flex-[1.15]">
-            <Parallax offset={40} className="h-full w-full scale-125 md:scale-[1.4]">
+          <div className="relative min-h-[520px] flex-1 overflow-hidden md:min-h-[620px] md:flex-[1.15]">
+            <Parallax offset={40} className="flex h-full w-full scale-[1.9] items-end justify-center">
               <LazyMount fallback={<SplineFallback />}>
                 <SplineScene scene={SPLINE_SCENE_URL} className="h-full w-full" />
               </LazyMount>

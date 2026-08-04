@@ -5,7 +5,7 @@ export const PORTFOLIO_DATA: PortfolioData = {
     name: "Adarsh Ramakrishna",
     title: "Full-Stack Software Developer | Angular | .NET | Azure",
     heroTitle:
-      "Building scalable full-stack applications with Angular, .NET and Microsoft Azure.",
+      "Full-stack software, built to scale — Angular on the front, .NET and Azure underneath.",
     valueProposition:
       "I combine professional software development experience with modern frontend, backend and cloud engineering skills to build reliable, maintainable and user-focused applications.",
     location: "Athlone, Ireland",

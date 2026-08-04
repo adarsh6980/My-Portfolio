@@ -1,6 +1,7 @@
 "use client";
 
 import { Reveal } from "@/components/ui/reveal";
+import { Parallax } from "@/components/ui/parallax";
 
 const orbits = [
   {
@@ -48,7 +49,9 @@ export function TechOrbit() {
           }
         `}</style>
 
-        <div className="pointer-events-none absolute bottom-0 left-1/2 aspect-square w-28 -translate-x-1/2 translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(212,212,216,0.4),transparent_70%)] blur-xl md:w-40" />
+        <Parallax offset={20} className="pointer-events-none absolute inset-0">
+          <div className="absolute bottom-0 left-1/2 aspect-square w-28 -translate-x-1/2 translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(212,212,216,0.4),transparent_70%)] blur-xl md:w-40" />
+        </Parallax>
 
         {orbits.map((orbit, index) => {
           const isCW = index % 2 === 0;
