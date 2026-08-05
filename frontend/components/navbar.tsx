@@ -51,7 +51,7 @@ export function Navbar() {
               {active === item.target && (
                 <motion.span
                   layoutId="nav-active-pill"
-                  transition={{ type: "spring", stiffness: 400, damping: 32 }}
+                  transition={{ type: "spring", stiffness: 280, damping: 30, mass: 0.6 }}
                   className="absolute inset-0 rounded-full bg-white/10"
                 />
               )}

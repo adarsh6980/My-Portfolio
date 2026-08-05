@@ -24,7 +24,7 @@ export function Hero() {
     <section id="home" className="flex min-h-[calc(100dvh-4.75rem)] items-center px-4 py-8 sm:px-8">
       <Card className="mx-auto w-full max-w-6xl overflow-hidden border-white/10 bg-navy-panel/60">
         <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" size={300} />
-        <div className="flex flex-col md:min-h-[620px] md:flex-row">
+        <div className="flex flex-col md:min-h-[600px] md:flex-row">
           <div className="relative z-10 flex flex-1 flex-col justify-center gap-6 p-8 sm:p-12">
             <Reveal>
               <p className="font-mono text-xs font-semibold uppercase tracking-wider text-accent">
@@ -57,13 +57,11 @@ export function Hero() {
             </Reveal>
           </div>
 
-          <div className="relative min-h-[520px] flex-1 overflow-hidden md:min-h-[620px] md:flex-[1.15]">
+          <div className="relative min-h-[420px] flex-1 overflow-hidden md:min-h-0 md:flex-[1.15]">
             <Parallax offset={40} className="h-full w-full">
-              <div className="flex h-full w-full scale-[2.3] items-center justify-center">
-                <LazyMount fallback={<SplineFallback />}>
-                  <SplineScene scene={SPLINE_SCENE_URL} className="h-full w-full" />
-                </LazyMount>
-              </div>
+              <LazyMount fallback={<SplineFallback />}>
+                <SplineScene scene={SPLINE_SCENE_URL} className="h-full w-full" />
+              </LazyMount>
             </Parallax>
           </div>
         </div>

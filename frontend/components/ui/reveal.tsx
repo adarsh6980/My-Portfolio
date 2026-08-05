@@ -4,9 +4,9 @@ import { motion } from "framer-motion";
 import { ReactNode } from "react";
 
 const offsets = {
-  up: { y: 32, x: 0 },
-  left: { y: 0, x: -32 },
-  right: { y: 0, x: 32 },
+  up: { y: 22, x: 0 },
+  left: { y: 0, x: -22 },
+  right: { y: 0, x: 22 },
 };
 
 export function Reveal({
@@ -24,7 +24,7 @@ export function Reveal({
       initial={{ opacity: 0, x: offset.x, y: offset.y }}
       whileInView={{ opacity: 1, x: 0, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.75, delay, ease: [0.16, 1, 0.3, 1] }}
     >
       {children}
     </motion.div>

@@ -37,5 +37,9 @@ export function LazyMount({
     return () => observer.disconnect();
   }, [rootMargin]);
 
-  return <div ref={ref}>{shouldRender ? children : fallback}</div>;
+  return (
+    <div ref={ref} className="h-full w-full">
+      {shouldRender ? children : fallback}
+    </div>
+  );
 }
