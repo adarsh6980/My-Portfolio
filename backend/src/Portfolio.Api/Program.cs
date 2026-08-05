@@ -99,7 +99,7 @@ var frontendIndexHtml = File.Exists(frontendIndexPath)
     ? await File.ReadAllTextAsync(frontendIndexPath)
     : null;
 var frontendScriptDirective = FrontendScriptPolicy.BuildDirective(frontendIndexHtml);
-var frontendContentSecurityPolicy = $"default-src 'self'; {frontendScriptDirective}; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https: http://localhost:5050; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'";
+var frontendContentSecurityPolicy = $"default-src 'self'; {frontendScriptDirective}; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self'; connect-src 'self' https: http://localhost:5050; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'";
 
 if (trustForwardedHeaders) app.UseForwardedHeaders();
 app.UseExceptionHandler();
