@@ -32,12 +32,20 @@ export function Projects() {
                 ))}
               </StaggerGroup>
               <div className="flex gap-4 text-sm font-semibold text-ink">
-                <a href={project.githubUrl} className="hover:text-accent">
-                  {project.githubUrl.startsWith("[ADD") ? project.githubUrl : "GitHub"}
-                </a>
-                <a href={project.liveUrl} className="hover:text-accent">
-                  {project.liveUrl.startsWith("[ADD") ? project.liveUrl : "Live demo"}
-                </a>
+                {project.githubUrl.startsWith("[") ? (
+                  <span className="text-muted">{project.githubUrl}</span>
+                ) : (
+                  <a href={project.githubUrl} className="hover:text-accent">
+                    GitHub
+                  </a>
+                )}
+                {project.liveUrl.startsWith("[") ? (
+                  <span className="text-muted">{project.liveUrl}</span>
+                ) : (
+                  <a href={project.liveUrl} className="hover:text-accent">
+                    Live demo
+                  </a>
+                )}
               </div>
             </Card>
           </Reveal>
