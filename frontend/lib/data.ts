@@ -303,14 +303,9 @@ export const PORTFOLIO_DATA: PortfolioData = {
   testimonials: [
     {
       quote:
-        "[ADD TESTIMONIAL QUOTE — ask a manager, mentor or collaborator for a short, specific line about working with you]",
-      name: "[ADD NAME]",
-      role: "[ADD ROLE, COMPANY]",
-    },
-    {
-      quote: "[ADD TESTIMONIAL QUOTE]",
-      name: "[ADD NAME]",
-      role: "[ADD ROLE, COMPANY]",
+        "Adarsh was a standout intern at Mersus Technologies. As part of our team, he delivered impressive technical work across our platform, seamlessly integrating version control systems, building a sleek Angular interface, and applying AI-driven automation, all while being a collaborative and proactive team player. He was a pleasure to work with. I'd recommend him without hesitation.",
+      name: "Brenda Mannion",
+      role: "Chief Operations Officer, Mersus Technologies (managed Adarsh directly)",
     },
   ],
   openSourceContributions: [
