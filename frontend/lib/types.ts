@@ -56,6 +56,21 @@ export interface Testimonial {
   role: string;
 }
 
+export interface OpenSourceContribution {
+  repo: string;
+  title: string;
+  url: string;
+  status: "Merged" | "Open";
+}
+
+export interface Hackathon {
+  name: string;
+  period: string;
+  project: string;
+  description: string;
+  url: string;
+}
+
 export interface PortfolioData {
   profile: {
     name: string;
@@ -79,4 +94,6 @@ export interface PortfolioData {
   projects: readonly Project[];
   achievements: readonly Achievement[];
   testimonials: readonly Testimonial[];
+  openSourceContributions: readonly OpenSourceContribution[];
+  hackathons: readonly Hackathon[];
 }

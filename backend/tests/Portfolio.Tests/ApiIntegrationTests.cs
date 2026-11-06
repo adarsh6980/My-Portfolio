@@ -52,26 +52,26 @@ public sealed class ApiIntegrationTests : IClassFixture<PortfolioApiFactory>
     }
 
     [Fact]
-    public async Task Projects_endpoint_returns_the_three_supplied_case_studies()
+    public async Task Projects_endpoint_returns_the_four_supplied_case_studies()
     {
         var projects = await _client.GetFromJsonAsync<ProjectResponse[]>("/api/projects");
 
         Assert.NotNull(projects);
-        Assert.Equal(3, projects.Length);
+        Assert.Equal(4, projects.Length);
         Assert.Contains(projects, project => project.Slug == "ai-code-documentation");
-        Assert.Contains(projects, project => project.Slug == "job-application-tracker");
-        Assert.Contains(projects, project => project.Slug == "cloud-project-management");
-        Assert.All(projects, project => Assert.Equal("[ADD GITHUB URL]", project.GithubUrl));
+        Assert.Contains(projects, project => project.Slug == "streakhire");
+        Assert.Contains(projects, project => project.Slug == "docdrift");
+        Assert.Contains(projects, project => project.Slug == "localdeploy");
     }
 
     [Fact]
     public async Task Project_detail_returns_a_known_case_study_and_not_found_for_an_unknown_slug()
     {
-        var known = await _client.GetAsync("/api/projects/job-application-tracker");
+        var known = await _client.GetAsync("/api/projects/streakhire");
         var unknown = await _client.GetAsync("/api/projects/not-a-project");
 
         Assert.Equal(HttpStatusCode.OK, known.StatusCode);
-        Assert.Equal("job-application-tracker", (await known.Content.ReadFromJsonAsync<ProjectResponse>())?.Slug);
+        Assert.Equal("streakhire", (await known.Content.ReadFromJsonAsync<ProjectResponse>())?.Slug);
         Assert.Equal(HttpStatusCode.NotFound, unknown.StatusCode);
     }
 
